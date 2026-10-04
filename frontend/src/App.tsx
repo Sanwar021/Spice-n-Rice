@@ -1096,9 +1096,18 @@ function Contact() {
             Casual attire · All major credit cards accepted
           </p>
         </div>
-        <InquiryForm />
+        <iframe
+          className="map-art contact-map"
+          title="Restaurant location on Google Maps"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          src={
+            "https://maps.google.com/maps?q=" +
+            encodeURIComponent(settings.address || "") +
+            "&output=embed"
+          }
+        />
       </section>
-      <Location embedded />
     </>
   );
 }
