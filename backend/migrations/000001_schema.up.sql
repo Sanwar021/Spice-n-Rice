@@ -1,0 +1,16 @@
+CREATE TABLE users (id bigserial PRIMARY KEY, email text UNIQUE NOT NULL, password_hash text NOT NULL, role text NOT NULL CHECK(role IN ('owner','staff')), created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE categories (id bigserial PRIMARY KEY, data jsonb NOT NULL CHECK(jsonb_typeof(data)='object'), created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now(), deleted_at timestamptz);
+CREATE TABLE menu_items (id bigserial PRIMARY KEY, category_id bigint REFERENCES categories(id), data jsonb NOT NULL, price_cents integer NOT NULL CHECK(price_cents>=0), created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now(), deleted_at timestamptz);
+CREATE TABLE catering_items (id bigserial PRIMARY KEY, data jsonb NOT NULL, price_cents integer NOT NULL CHECK(price_cents>=0), half_price_cents integer NOT NULL CHECK(half_price_cents>=0), created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now(), deleted_at timestamptz);
+CREATE TABLE price_history (id bigserial PRIMARY KEY, resource text NOT NULL, item_id bigint NOT NULL, field text NOT NULL, old_cents integer NOT NULL, new_cents integer NOT NULL, user_id bigint REFERENCES users(id), created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE settings (id bigserial PRIMARY KEY, key text UNIQUE NOT NULL DEFAULT 'site', data jsonb NOT NULL, created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now(), deleted_at timestamptz);
+CREATE TABLE media (id bigserial PRIMARY KEY, data jsonb NOT NULL, created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now(), deleted_at timestamptz);
+CREATE TABLE inquiries (id bigserial PRIMARY KEY, data jsonb NOT NULL, created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now(), deleted_at timestamptz);
+CREATE TABLE testimonials (id bigserial PRIMARY KEY, data jsonb NOT NULL, created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now(), deleted_at timestamptz);
+CREATE TABLE sessions (id text PRIMARY KEY, user_id bigint REFERENCES users(id) ON DELETE CASCADE, expires_at timestamptz NOT NULL);
+CREATE INDEX menu_category_idx ON menu_items(category_id) WHERE deleted_at IS NULL;
+CREATE INDEX history_time_idx ON price_history(created_at DESC);
+CREATE INDEX inquiries_status_idx ON inquiries((data->>'status')) WHERE deleted_at IS NULL;
+CREATE INDEX sessions_expiry_idx ON sessions(expires_at);
+CREATE FUNCTION touch_updated_at() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN NEW.updated_at=now(); RETURN NEW; END $$;
+DO $$ DECLARE t text; BEGIN FOREACH t IN ARRAY ARRAY['users','categories','menu_items','catering_items','settings','media','inquiries','testimonials'] LOOP EXECUTE format('CREATE TRIGGER touch BEFORE UPDATE ON %I FOR EACH ROW EXECUTE FUNCTION touch_updated_at()',t); END LOOP; END $$;

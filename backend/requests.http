@@ -1,0 +1,28 @@
+@base = http://127.0.0.1:8087/api/v1
+
+### Public menu
+GET {{base}}/menu
+
+### Catering
+GET {{base}}/catering-menu
+
+### Settings
+GET {{base}}/settings
+
+### Login (set credentials in your HTTP client's environment)
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{"email":"{{$dotenv OWNER_EMAIL}}","password":"{{$dotenv OWNER_PASSWORD}}"}
+
+### Dashboard; reuse the response cookies
+GET {{base}}/admin/dashboard
+
+### Price history
+GET {{base}}/admin/audit
+
+### Refresh
+POST {{base}}/auth/refresh
+
+### Logout
+POST {{base}}/auth/logout

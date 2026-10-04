@@ -1,0 +1,39 @@
+# Optional packaging only. Local development does not use Docker.
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: spicenrice
+      POSTGRES_USER: spice
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U spice -d spicenrice]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  backend:
+    build: ./backend
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://spice:${POSTGRES_PASSWORD}@postgres:5432/spicenrice?sslmode=disable
+      LISTEN_ADDR: :8087
+      CWEBP_PATH: /usr/bin/cwebp
+      UPLOAD_DIR: /app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - uploads:/app/uploads
+    restart: unless-stopped
+  frontend:
+    build: ./frontend
+    ports:
+      - 8088:80
+    depends_on:
+      - backend
+    restart: unless-stopped
+volumes:
+  pgdata:
+  uploads:
