@@ -99,13 +99,27 @@ func (a *API) limit(max int) func(http.Handler) http.Handler {
 	}
 }
 func (a *API) Router() http.Handler {
+	origins := make([]string, 0, 2)
+	for _, origin := range strings.Split(a.Origin, ",") {
+		if origin = strings.TrimSpace(origin); origin != "" {
+			origins = append(origins, origin)
+		}
+	}
+	originAllowed := func(origin string) bool {
+		for _, allowed := range origins {
+			if origin == allowed {
+				return true
+			}
+		}
+		return false
+	}
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID, middleware.Recoverer, middleware.Timeout(20*time.Second))
-	r.Use(cors.Handler(cors.Options{AllowedOrigins: []string{a.Origin}, AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}, AllowedHeaders: []string{"Content-Type"}, AllowCredentials: true}))
+	r.Use(cors.Handler(cors.Options{AllowedOrigins: origins, AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}, AllowedHeaders: []string{"Content-Type"}, AllowCredentials: true}))
 	r.Use(func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("X-Content-Type-Options", "nosniff")
-			if r.Method != "GET" && r.Method != "OPTIONS" && r.Header.Get("Origin") != "" && r.Header.Get("Origin") != a.Origin {
+			if r.Method != "GET" && r.Method != "OPTIONS" && r.Header.Get("Origin") != "" && !originAllowed(r.Header.Get("Origin")) {
 				fail(w, 403, "Origin not allowed")
 				return
 			}
