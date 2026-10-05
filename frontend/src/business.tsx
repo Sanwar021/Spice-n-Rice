@@ -67,8 +67,9 @@ export function SEO() {
   const location = useLocation();
   const { data } = useSettings();
   useEffect(() => {
-    const name = location.pathname.split("/")[1];
-    document.title = `${name ? name.charAt(0).toUpperCase() + name.slice(1) + " · " : ""}Spice 'N' Rice · Indian Cuisine`;
+    const route = location.pathname.split("/")[1];
+    const page = ({ menu: "Menu", catering: "Catering", about: "About", contact: "Contact" } as Record<string, string>)[route];
+    document.title = `${page ? page + " · " : ""}Spice 'N' Rice · Indian Cuisine in Richardson`;
     window.scrollTo(0, 0);
   }, [location.pathname]);
   const s = data?.[0];
@@ -78,6 +79,10 @@ export function SEO() {
         "@context": "https://schema.org",
         "@type": "Restaurant",
         name: s.business_name,
+        url: "https://spicenriceharun.com/",
+        image: "https://spicenriceharun.com/images/design/food-0.webp",
+        priceRange: "$–$$",
+        sameAs: [s.facebook, s.twitter].filter((url: unknown) => typeof url === "string" && url.startsWith("https://")),
         servesCuisine: "Indian",
         telephone: s.phones?.[0],
         address: {

@@ -6,12 +6,17 @@ import { api } from "./api";
 const inquirySchema = z.object({
   name: z.string().min(2, "Please enter your name"),
   email: z.string().email("Enter a valid email"),
-  phone: z.string().min(7, "Enter a phone number"),
+  phone: z.string().refine((value) => value.replace(/\D/g, "").length >= 10 && value.replace(/\D/g, "").length <= 15, "Enter a valid phone number"),
   message: z.string().min(5, "Tell us a little more"),
   date: z.string().optional(),
-  guests: z.coerce.number().optional(),
+  guests: z.coerce.number().int().min(1).max(1000).optional(),
   website: z.string().optional(),
 });
+const today = () => {
+  const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/Chicago", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date());
+  const part = (type: string) => parts.find((item) => item.type === type)?.value || "";
+  return `${part("year")}-${part("month")}-${part("day")}`;
+};
 export default function InquiryForm({
   kind,
 }: {
@@ -22,6 +27,7 @@ export default function InquiryForm({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<z.infer<typeof inquirySchema>>({
     resolver: zodResolver(inquirySchema),
@@ -50,8 +56,13 @@ export default function InquiryForm({
           setError("Please enter your event date and guest count.");
           return;
         }
+        if (kind === "catering" && values.date! < today()) {
+          setError("Choose today or a future date.");
+          return;
+        }
         try {
-          await api("/inquiries", "POST", { ...values, kind });
+          await api("/inquiries", "POST", { ...values, phone: values.phone.trim().replace(/[^\d+]/g, ""), kind });
+          reset();
           setSent(true);
         } catch (e) {
           setError((e as Error).message);
@@ -87,7 +98,8 @@ export default function InquiryForm({
                         ? "tel"
                         : "text"
               }
-              min={key === "guests" ? 1 : undefined}
+              max={key === "guests" ? 1000 : undefined}
+              min={key === "date" ? today() : key === "guests" ? 1 : undefined}
               required
             />
             {errors[key as keyof typeof errors] && (

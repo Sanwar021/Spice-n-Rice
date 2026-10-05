@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Pause, Play } from "lucide-react";
-import { photoSet } from "./design-data";
+import { photoDimensions, photoSet } from "./design-data";
 
 export default function HeroCarousel({ images }: { images: string[] }) {
   const [index, setIndex] = useState(0);
@@ -9,6 +9,7 @@ export default function HeroCarousel({ images }: { images: string[] }) {
     () => matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
   const [focused, setFocused] = useState(false);
+  const [loadLater, setLoadLater] = useState(false);
   const active = index % images.length;
   useEffect(() => {
     const preference = matchMedia("(prefers-reduced-motion: reduce)");
@@ -37,14 +38,17 @@ export default function HeroCarousel({ images }: { images: string[] }) {
           <img
             key={src}
             className={`hero-food hero-slide${i === active ? " is-active" : ""}`}
-            src={src}
-            srcSet={photoSet(src)}
+            src={i === 0 || loadLater ? src : undefined}
+            srcSet={i === 0 || loadLater ? photoSet(src) : undefined}
             sizes="(max-width: 600px) 310px, (max-width: 1150px) 40vw, 490px"
             alt={i === active ? "Food photography from our menu" : ""}
             aria-hidden={i !== active}
             {...{ fetchpriority: i === 0 ? "high" : "low" }}
-            width="1000"
-            height="1000"
+            loading={i === 0 || loadLater ? "eager" : "lazy"}
+            decoding="async"
+            onLoad={i === 0 ? () => window.setTimeout(() => setLoadLater(true), 0) : undefined}
+            width={photoDimensions(src)[0]}
+            height={photoDimensions(src)[1]}
           />
         ))}
         <span className="hero-photo-glow" aria-hidden="true" />

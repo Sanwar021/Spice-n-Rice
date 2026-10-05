@@ -81,7 +81,7 @@ SMTP notifications contain only a notification to check the admin inbox, not cus
 
 ## Tests and checks
 
-With the local API, frontend, and isolated database running:
+Run unit and build checks locally:
 
 ```sh
 cd backend
@@ -92,16 +92,12 @@ cd ../frontend
 npm run lint
 npm test
 npm run build
-npx playwright test
-node scripts/design-audit.mjs
-node scripts/admin-audit.mjs
 npm audit
 cd ..
-node scripts/integration.mjs
-node scripts/media-test.mjs
+node scripts/run-qa-isolated.mjs
 ```
 
-Browser tests use installed Chrome, not a downloaded browser, and read credentials from `.env` without printing them. Integration tests exercise database writes; run them only against a development database. Test records are soft-deleted after the main integration suite; audit evidence is retained. The media test adds a genuine restaurant photo to the development media library.
+The isolated QA runner creates a temporary PostgreSQL database, starts a dedicated API and Vite server, runs Playwright, then stops the services and drops the database even if tests fail. It requires local PostgreSQL command-line tools and installed Chrome; no Docker is used. Run `npm run audit:responsive` and `npm run audit:touch` from `frontend/` while the local site is running. Browser tests use credentials from `.env` without printing them. Keep `scripts/integration.mjs` and `scripts/media-test.mjs` limited to a disposable development database because they write data.
 
 `backend/openapi.yaml` is an OpenAPI 3.1 document serialized as JSON (valid YAML 1.2). `backend/requests.http` is a REST client collection. `node scripts/openapi.mjs` regenerates the spec; `node scripts/seed.mjs` regenerates the original seed migration. Never regenerate an already-applied migration in a deployed database; add a new migration instead.
 
@@ -122,8 +118,8 @@ The optional container files from the original brief remain unused. This workflo
 
 - The supplied business details and all 68 individual menu prices / 39 catering entries are seeded. Beef Biriyani half-tray is **$80**, correcting the old site's apparent $70 typo as instructed.
 - The lunch price is null until the owner sets it; “call for price” is shown. Vegetarian status is inferred from dish names. Spicy flags default off because spice levels were unspecified; the owner should set them. Do not treat these flags as allergen guarantees.
-- “Chicken Karma” retains the supplied spelling. Chicken Karahi/Karma boneless variants and samosa fillings are separate menu items. Lassi and Chicken 65 retain their supplied option descriptions.
-- Shrimp Curry remains in the supplied catering `Veg` section to preserve the brief's source grouping; it is seafood, not vegetarian. The owner should move it to an appropriate section before publication.
+- Menu and catering names follow the current Menufy ordering menu, including Chicken Korma, Vegetable Biriyani, Pulao, and Shish Kabob. Existing prices remain unchanged. Lassi and Chicken 65 retain their option descriptions.
+- Shrimp Curry is in the catering `Non-Veg` section because it contains seafood.
 - The supplied Figma export includes four illustrative Unsplash food images. The exact images and fonts are self-hosted; responsive WebP sizes are provided for the hero and featured cards. Images are labeled illustrative and can be replaced through admin settings/media. The original restaurant catering image is a low-resolution interior photograph.
 - The supplied photo hero replaces the previous procedural 3D bowl. Decorative CSS motion respects reduced-motion preferences; the old WebGL component is unused and excluded from the production bundle.
 - Layout checks cover 320, 375, 390, 600, 768, 820, 1024, 1280, 1440, 1920, and 2560 CSS-pixel widths. This is broad responsive coverage, not a claim of testing every physical device or browser.

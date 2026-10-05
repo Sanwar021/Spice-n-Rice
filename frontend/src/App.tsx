@@ -35,7 +35,7 @@ import {
   List,
   Check,
 } from "lucide-react";
-import { photo, photoSet, type Item } from "./design-data";
+import { photo, photoDimensions, photoSet, type Item } from "./design-data";
 import HeroCarousel from "./HeroCarousel";
 import HighlightsCarousel from "./HighlightsCarousel";
 import { api, Row, money } from "./api";
@@ -66,7 +66,7 @@ export function Logo() {
   return (
     <Link to="/" className="logo">
       {settings.logo && settings.logo !== "/images/logo.svg" ? (
-        <img className="brand-logo" src={settings.logo} alt={settings.business_name} />
+        <img className="brand-logo" src={settings.logo} srcSet={settings.logo === "/images/spice-logo.webp" ? "/images/spice-logo-320.webp 320w, /images/spice-logo.webp 768w" : undefined} sizes="160px" alt={settings.business_name} width="768" height="256" />
       ) : (
         <>
           {settings.business_name &&
@@ -109,7 +109,7 @@ export function Order() {
       className="button"
       href={settings.order_url}
       target="_blank"
-      rel="noreferrer"
+      rel="noopener noreferrer"
     >
       Order Online <ArrowUpRight size={17} />
     </a>
@@ -497,7 +497,7 @@ function Home() {
           </Button>
         </div>
         <div className="lunch-image">
-          <img src={photo(2)} alt="Illustrative Indian curry lunch" />
+          <img src={photo(2)} srcSet={photoSet(photo(2))} sizes="(max-width: 600px) 272px, 380px" alt="Illustrative Indian curry lunch" width="1000" height="1500" loading="lazy" />
           <span>
             Made fresh.
             <br />
@@ -510,6 +510,8 @@ function Home() {
           src={settings.catering_image}
           loading="lazy"
           alt="Spice N Rice dining room"
+          width="250"
+          height="175"
         />
         <div>
           <div className="eyebrow">GOOD FOOD BRINGS PEOPLE TOGETHER</div>
@@ -727,7 +729,7 @@ function MenuPage() {
                   loading="lazy"
                   width="1000"
                   height="700"
-                  alt={`Illustrative ${item.category} dish`}
+                  alt={item.image ? item.name : `Illustrative ${item.category} dish`}
                 />
               )}
               <div>
@@ -807,7 +809,9 @@ function MenuPage() {
                 detail.image ||
                 photo(Object.keys(categories).indexOf(detail.category))
               }
-              alt="Illustrative food photography"
+              alt={detail.image ? detail.name : `Illustrative ${detail.name}`}
+              width="1000"
+              height="700"
             />
             <div className="modal-body">
               <div className="eyebrow">{detail.category}</div>
@@ -864,10 +868,10 @@ function InquiryForm({ catering = false }: { catering?: boolean }) {
   );
 }
 function Catering() {
-  const [tab, setTab] = useState("Biryani");
+  const [tab, setTab] = useState("Biriyani");
   const { settings, catering } = useContext(Store);
   const rows = Object.fromEntries(
-    ["Biryani", "Non-Veg", "Veg", "Grilled", "Sides"].map((section) => [
+    ["Biriyani", "Non-Veg", "Veg", "Grilled", "Sides"].map((section) => [
       section,
       catering.filter((i) => i.section === section),
     ]),
@@ -895,6 +899,8 @@ function Catering() {
           src={settings.catering_image}
           loading="lazy"
           alt="Spice 'N' Rice catering"
+          width="250"
+          height="175"
         />
       </section>
       <section className="container occasions">
@@ -919,7 +925,7 @@ function Catering() {
           {["Full Tray", "Half Tray"].map((name, index) => (
             <div key={name}>
               <div className={`tray ${index ? "half" : ""}`}>
-                <img src={photo(0)} alt="Illustrative biryani tray" />
+                <img src={photo(0)} alt="Illustrative biryani tray" width="1000" height="653" loading="lazy" />
               </div>
               <h3>{name}</h3>
               <p>Serves {index ? "7–10" : "15–20"} people</p>
@@ -994,7 +1000,7 @@ function About() {
         desc="Good food. Big portions. No fuss. That’s been our story since 2009."
       />
       <section className="container about-story">
-        <img src={photo(3)} alt="Illustrative Indian meal" />
+        <img src={photo(3)} alt="Illustrative Indian meal" width="1000" height="611" loading="lazy" />
         <div>
           <div className="eyebrow">THE WAY WE SEE IT</div>
           <h2>
@@ -1052,6 +1058,9 @@ function About() {
               key={index}
               src={photo(index)}
               alt="Illustrative Indian food"
+              width={photoDimensions(photo(index))[0]}
+              height={photoDimensions(photo(index))[1]}
+              loading="lazy"
             />
           ))}
         </div>
@@ -1164,7 +1173,7 @@ export default function App() {
     );
   if (
     settings.isPending ||
-    menu.isPending ||
+    (location.pathname !== "/" && menu.isPending) ||
     (location.pathname === "/catering" && catering.isPending)
   )
     return (
@@ -1199,8 +1208,8 @@ export default function App() {
       ...i,
       id: i.id,
       name:
-        c.name === "Biryanis" && !/biryani/i.test(i.name)
-          ? i.name + " Biryani"
+        c.name === "Biriyanis" && !/biriyani/i.test(i.name)
+          ? i.name + " Biriyani"
           : i.name,
       price: i.price_cents / 100,
       category: c.name,

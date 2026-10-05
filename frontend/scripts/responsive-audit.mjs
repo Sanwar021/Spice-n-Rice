@@ -26,8 +26,11 @@ async function inspect(page, label, route) {
   await page.waitForTimeout(120);
   const result = await page.evaluate(() => {
     const viewport = document.documentElement.clientWidth;
-    const allowedScroll = (element) =>
-      element.closest(".category-tabs,.featured-grid,.admin-sidebar nav,.table-wrap") !== null;
+    const allowedScroll = (element) => {
+      if (element.closest(".category-tabs,.featured-grid,.admin-sidebar nav,.table-wrap")) return true;
+      const carousel = element.closest(".highlights-viewport");
+      return carousel !== null && ["hidden", "clip", "auto", "scroll"].includes(getComputedStyle(carousel).overflowX);
+    };
     const overflow = [...document.querySelectorAll("body *")]
       .filter((element) => {
         const rect = element.getBoundingClientRect();
@@ -106,7 +109,7 @@ await interaction.goto(base + "/");
 await interaction.getByRole("button", { name: "Toggle menu" }).click();
 await interaction.getByRole("navigation", { name: "Mobile navigation" }).getByRole("link", { name: "Menu", exact: true }).click();
 await interaction.waitForURL("**/menu");
-await interaction.getByRole("searchbox").fill("Butter Chicken");
+await interaction.getByRole("searchbox").fill("Buttered Chicken");
 await interaction.locator(".menu-item").first().click();
 await interaction.getByRole("dialog").waitFor();
 await interaction.keyboard.press("Escape");
@@ -134,6 +137,20 @@ for (const width of [320, 360, 390, 430, 600, 768, 820, 1024, 1366, 1920]) {
 }
 await admin.getByRole("button", { name: "Sign out" }).click();
 await adminContext.close();
+
+const overflowProbe = await browser.newPage({ viewport: { width: 390, height: 844 } });
+await overflowProbe.goto(base + "/");
+const catchesRealOverflow = await overflowProbe.evaluate(() => {
+  const probe = document.createElement("div");
+  probe.style.cssText = "position:relative;width:calc(100vw + 100px);height:1px";
+  document.body.append(probe);
+  const detected = document.documentElement.scrollWidth > document.documentElement.clientWidth + 1;
+  probe.remove();
+  return detected;
+});
+checks++;
+if (!catchesRealOverflow) record("overflow-probe", { message: "A deliberately wide element was not detected" });
+await overflowProbe.close();
 
 writeFileSync("../.local/responsive-audit.json", JSON.stringify({ failures, checks }, null, 2));
 console.log(JSON.stringify({ failures, checks }, null, 2));

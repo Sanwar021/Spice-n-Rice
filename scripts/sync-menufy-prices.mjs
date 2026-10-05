@@ -1,16 +1,16 @@
 import { readFileSync, writeFileSync } from "node:fs";
 
 const prices = {
-  Biryanis: { Vegetable: 1099, Chicken: 1199, "Chicken (Boneless)": 1399, Goat: 1599, "Goat Kacchi": 1699, Beef: 1499, "Beef Tehari": 1399, Shrimp: 1599 },
-  "Non-Veg": { "Chicken Karahi": 1499, "Chicken Karma": 1499, "Chicken Karma (Boneless)": 1599, "Butter Chicken": 1499, "Chicken 65 (Dry/Wet)": 1499, "Chicken Roast": 1499, "Mezbani Beef Curry": 1499, "Haleem (Beef)": 1299, "Goat Karahi": 1599, "Goat Korma": 1599 },
-  Grilled: { "Tandoori Chicken (2pcs)": 1499, "Chicken Boti": 1499, "Chicken Sheekh Kabab": 1499, "Beef Boti": 1599, "Beef Sheekh Kabab": 1499, "Mix Grill": 2099 },
-  "Naan Wraps": { Paneer: 899, "Chicken Boti": 899, "Beef Kabab": 899, "Gyro Wrap": 899, "Gyro Combo": 1099 },
-  Veg: { "Saag Paneer": 1399, "Paneer Masala": 1399, "Muttar Paneer": 1399, "Mixed Vegetables": 1199, "Navratan Korma": 1199, "Aloo Gobi": 1199, "Chana Masala": 1199, "Bhuna Daal": 1199, "Malai Vegetable Kofta": 1199 },
-  Fish: { "Ruhi Fish Curry": 1699, "Whole Tilapia Fish Curry": 1599, "Hilsha Fish Curry": 1999, "Pompret Curry or Fry": 1699, "Shrimp Curry": 1699, "Shrimp Malai Curry": 1699 },
-  Snacketizers: { "Vegetable Samosa": 199, "Daal Puri (5pc)": 599 },
-  Sides: { Naan: 199, "Garlic Naan": 299, "Paratha (2pc)": 399 },
-  "Children’s": { "Chicken Nuggets with Fries": 699, "Chicken Tenders (5pc)": 799 },
-  Beverages: { "Soft Drinks": 199, "Bottled Water": 199, "Masala Tea/Chai": 149, "Lassi (Mango/Sweet/Salt)": 399 },
+  Biriyanis: { Vegetable: 1099, Chicken: 1199, "Chicken (Boneless)": 1399, Goat: 1599, "Goat Kacchi": 1699, Beef: 1499, "Beef Tehari": 1399, Shrimp: 1599 },
+  "Non-Veg": { "Chicken Karahi": 1499, "Chicken Korma": 1499, "Chicken Korma (Boneless)": 1599, "Buttered Chicken": 1499, "Chicken 65": 1499, "Chicken Roast": 1499, "Mezbani Beef Curry": 1499, Haleem: 1299, "Goat Karahi": 1599, "Goat Korma": 1599 },
+  Grilled: { "Tandoori Chicken Leg (2 pieces)": 1499, "Chicken Boti": 1499, "Chicken Shish Kabab": 1499, "Beef Boti": 1599, "Beef Shish Kabab": 1499, "Mixed Grill": 2099 },
+  "Naan Wraps": { "Paneer Wrap": 899, "Chicken Boti Wrap": 899, "Beef Kabab Wrap": 899, "Gyro Wrap": 899, "Gyro Combo": 1099 },
+  Veg: { "Saag Paneer": 1399, "Paneer Masala": 1399, "Muttar Paneer": 1399, "Mixed Vegetable": 1199, "Navratan Korma": 1199, "Aloo Gobi": 1199, "Chana Masala": 1199, "Bhuna Daal": 1199, "Malai Vegetable Kofta": 1199 },
+  Fish: { "Ruhi Fish Curry": 1699, "Whole Tilapia Fish Curry": 1599, "Hilsha Fish Curry": 1999, "Pomphret Curry or Fry": 1699, "Shrimp Curry": 1699, "Shrimp Malai Curry": 1699 },
+  Snacketizers: { "Vegetable Samosa (each)": 199, "Daal Puri (5pc)": 599 },
+  Sides: { Naan: 199, "Garlic Naan": 299, "Paratha (2 Pieces)": 399 },
+  "Children’s": { "Chicken Nuggets with Fries": 699, "Chicken Tenders (5)": 799 },
+  Beverages: { "Soft Drinks (can)": 199, "Bottled Water": 199, "Masala Tea": 149, Lassi: 399 },
 };
 
 const env = Object.fromEntries(readFileSync(".env", "utf8").split(/\r?\n/).filter(Boolean).map((line) => {

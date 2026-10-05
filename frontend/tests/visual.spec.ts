@@ -6,7 +6,7 @@ test('reference hero, reduced motion, and dish dialog',async({page})=>{
  const hero=page.locator('.hero-food').first();await expect(hero).toBeVisible();
  await expect.poll(()=>hero.evaluate((i:HTMLImageElement)=>i.complete&&i.naturalWidth>0)).toBe(true);
  expect(await hero.evaluate(i=>getComputedStyle(i).animationName)).toBe('none');
- await page.goto('/menu');await page.getByRole('searchbox').fill('Butter Chicken');
+  await page.goto('/menu');await page.getByRole('searchbox').fill('Buttered Chicken');
  await page.locator('.menu-item').click();await expect(page.getByRole('dialog')).toBeVisible();
  await expect(page.getByRole('button',{name:'Close item'})).toBeFocused();
  await page.keyboard.press('Escape');await expect(page.getByRole('dialog')).toHaveCount(0);

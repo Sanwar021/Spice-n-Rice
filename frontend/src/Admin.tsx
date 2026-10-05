@@ -46,7 +46,7 @@ function Login({ done }: { done: () => void }) {
   return (
     <main className="login">
       <Link to="/" className="wordmark">
-        <img className="brand-logo" src="/images/spice-logo.webp" alt="Spice 'N' Rice" /><span>THE RESTAURANT STUDIO</span>
+        <img className="brand-logo" src="/images/spice-logo.webp" alt="Spice 'N' Rice" width="768" height="256" /><span>THE RESTAURANT STUDIO</span>
       </Link>
       <form
         className="panel"
@@ -246,10 +246,10 @@ function Editor({
               </select>
             ) : key === "section" ? (
               <select
-                value={data[key] || "Biryani"}
+                value={data[key] || "Biriyani"}
                 onChange={(e) => change(key, e.target.value)}
               >
-                {["Biryani", "Non-Veg", "Veg", "Grilled", "Sides"].map((s) => (
+                {["Biriyani", "Non-Veg", "Veg", "Grilled", "Sides"].map((s) => (
                   <option key={s}>{s}</option>
                 ))}
               </select>
@@ -396,6 +396,8 @@ function Editor({
                     className="image-preview"
                     src={data[key]}
                     alt="Selected"
+                    width="400"
+                    height="300"
                   />
                 )}
               </>
@@ -526,7 +528,7 @@ export default function Admin() {
     <div className="admin-shell">
       <aside className="admin-sidebar">
         <Link to="/" className="wordmark">
-          <img className="brand-logo" src="/images/spice-logo.webp" alt="Spice 'N' Rice" /><span>RESTAURANT STUDIO</span>
+          <img className="brand-logo" src="/images/spice-logo.webp" alt="Spice 'N' Rice" width="768" height="256" /><span>RESTAURANT STUDIO</span>
         </Link>
         <nav aria-label="Admin navigation">
           {sections.map(([key, label, Icon]) => (
@@ -620,7 +622,7 @@ export default function Admin() {
                       spicy: false,
                       featured: false,
                       sort_order: rows.length,
-                      section: "Biryani",
+                      section: "Biriyani",
                       price_cents: 0,
                       half_price_cents: 0,
                     })
@@ -735,7 +737,7 @@ export default function Admin() {
                   )
                   .map((row) => (
                     <article className="panel" key={row.id}>
-                      <img src={row.thumbnail} alt={row.name} />
+                      <img src={row.thumbnail} alt={row.name} width="400" height="300" loading="lazy" />
                       <p>{row.name}</p>
                       <button
                         onClick={() => {

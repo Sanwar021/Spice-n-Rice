@@ -446,27 +446,9 @@ func (a *API) inquiry(w http.ResponseWriter, r *http.Request) {
 		respond(w, 200, map[string]bool{"ok": true})
 		return
 	}
-	for _, key := range []string{"name", "email", "message", "phone"} {
-		s, _ := b[key].(string)
-		if len(strings.TrimSpace(s)) == 0 || len(s) > 4000 {
-			fail(w, 422, "Please complete all contact fields")
-			return
-		}
-	}
-	if _, err := mail.ParseAddress(b["email"].(string)); err != nil {
-		fail(w, 422, "Enter a valid email")
+	if err := validateInquiry(b, time.Now()); err != nil {
+		fail(w, 422, err.Error())
 		return
-	}
-	if b["kind"] != "contact" && b["kind"] != "catering" {
-		fail(w, 422, "Invalid inquiry type")
-		return
-	}
-	if b["kind"] == "catering" {
-		date, _ := b["date"].(string)
-		if _, err := time.Parse("2006-01-02", date); err != nil || !validNumber(b["guests"], 100000) {
-			fail(w, 422, "Enter a date and guest count")
-			return
-		}
 	}
 	b["status"] = "new"
 	delete(b, "website")
@@ -484,4 +466,45 @@ func (a *API) inquiry(w http.ResponseWriter, r *http.Request) {
 		}()
 	}
 	respond(w, 201, map[string]bool{"ok": true})
+}
+func validateInquiry(b models.Record, now time.Time) error {
+	name, _ := b["name"].(string)
+	message, _ := b["message"].(string)
+	email, _ := b["email"].(string)
+	phone, _ := b["phone"].(string)
+	if len(strings.TrimSpace(name)) < 2 || len(name) > 150 || len(strings.TrimSpace(message)) < 5 || len(message) > 4000 {
+		return fmt.Errorf("Please complete all contact fields")
+	}
+	address, err := mail.ParseAddress(email)
+	if err != nil || address.Address != email || len(email) > 254 {
+		return fmt.Errorf("Enter a valid email")
+	}
+	digits := strings.Builder{}
+	for _, ch := range phone {
+		if ch >= '0' && ch <= '9' {
+			digits.WriteRune(ch)
+		} else if !strings.ContainsRune("+ ()-.\t", ch) {
+			return fmt.Errorf("Enter a valid phone number")
+		}
+	}
+	if digits.Len() < 10 || digits.Len() > 15 || len(phone) > 30 {
+		return fmt.Errorf("Enter a valid phone number")
+	}
+	b["phone"] = digits.String()
+	if b["kind"] != "contact" && b["kind"] != "catering" {
+		return fmt.Errorf("Invalid inquiry type")
+	}
+	if b["kind"] == "catering" {
+		date, _ := b["date"].(string)
+		eventDate, err := time.Parse("2006-01-02", date)
+		zone, zoneErr := time.LoadLocation("America/Chicago")
+		if err != nil || zoneErr != nil || eventDate.Format("2006-01-02") != date || date < now.In(zone).Format("2006-01-02") {
+			return fmt.Errorf("Choose today or a future date")
+		}
+		guests, ok := b["guests"].(float64)
+		if !ok || guests < 1 || guests > 1000 || guests != math.Trunc(guests) {
+			return fmt.Errorf("Enter a guest count between 1 and 1000")
+		}
+	}
+	return nil
 }

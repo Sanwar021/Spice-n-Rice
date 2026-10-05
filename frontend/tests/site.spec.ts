@@ -36,7 +36,7 @@ test("public pages, filtering, responsive layout, accessibility", async ({
     ).toEqual([]);
   }
   await page.goto("/menu");
-  await page.getByRole("searchbox").fill("Butter Chicken");
+  await page.getByRole("searchbox").fill("Buttered Chicken");
   await expect(page.locator(".menu-item")).toHaveCount(1);
   await page.getByRole("button", { name: "Vegetarian", exact: true }).click();
   await expect(page.getByText("No dishes found.")).toBeVisible();
@@ -56,6 +56,7 @@ test("admin login, device image upload, edit price, settings, logout", async ({
   page,
   context,
 }) => {
+  test.skip(!process.env.QA_ISOLATED_BASE_URL, "Admin mutation tests require the disposable QA environment");
   await page.goto("/admin");
   await page.getByLabel("Email", { exact: true }).fill(env.OWNER_EMAIL);
   await page.getByLabel("Password", { exact: true }).fill(env.OWNER_PASSWORD);
@@ -63,21 +64,21 @@ test("admin login, device image upload, edit price, settings, logout", async ({
   await expect(page.getByRole("heading", { name: "Overview" })).toBeVisible();
   await page.getByRole("button", { name: "Menu items", exact: true }).click();
   const price = page.getByRole("spinbutton", {
-    name: "Price in cents for Butter Chicken",
+    name: "Price in cents for Buttered Chicken",
     exact: true,
   });
   await expect(price).toBeVisible();
   const original = await price.inputValue();
   await price.fill(String(Number(original) + 1));
   await page
-    .getByRole("button", { name: "Save price for Butter Chicken", exact: true })
+    .getByRole("button", { name: "Save price for Buttered Chicken", exact: true })
     .click();
   await expect(page.getByText("Saved", { exact: true })).toBeVisible();
   await price.fill(original);
   await page
-    .getByRole("button", { name: "Save price for Butter Chicken", exact: true })
+    .getByRole("button", { name: "Save price for Buttered Chicken", exact: true })
     .click();
-  const butterRow = page.getByRole("row").filter({ hasText: "Butter Chicken" });
+  const butterRow = page.getByRole("row").filter({ hasText: "Buttered Chicken" });
   await butterRow.getByRole("button", { name: "Edit", exact: true }).click();
   await expect(
     page.getByRole("button", { name: "Upload from device", exact: true }),

@@ -1311,7 +1311,12 @@ td {
   width: 100%;
   height: 100%;
   min-height: 390px;
-  border: 0;
+  border: 1px solid #c9c3ae;
+  border-radius: 18px;
+  background: #eae7db;
+  box-shadow: 0 18px 48px rgb(40 55 38 / 10%);
+  filter: grayscale(0.78) sepia(0.27) saturate(0.72) hue-rotate(24deg)
+    contrast(1.08) brightness(0.99);
 }
 .form-panel {
   background: var(--surface);

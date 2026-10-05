@@ -45,7 +45,7 @@
   transition: transform 900ms ease-out;
 }
 .hero-premium .hero-copy {
-  animation: hero-arrive 900ms both;
+  animation: none;
 }
 .hero-premium .hero-copy > .eyebrow {
   letter-spacing: 2.8px;
