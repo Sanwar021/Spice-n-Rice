@@ -42,7 +42,6 @@ import { api, Row, money } from "./api";
 import { useQuery } from "@tanstack/react-query";
 import { isOpen, Hours, SEO } from "./business";
 export { isOpen } from "./business";
-const LiveForm = lazy(() => import("./InquiryForm"));
 const Admin = lazy(() => import("./Admin"));
 import "./admin-styles.css";
 
@@ -889,15 +888,6 @@ function PageTitle({
     </section>
   );
 }
-function InquiryForm({ catering = false }: { catering?: boolean }) {
-  return (
-    <Suspense
-      fallback={<div className="form-panel loading">Loading form…</div>}
-    >
-      <LiveForm kind={catering ? "catering" : "contact"} />
-    </Suspense>
-  );
-}
 function Catering() {
   const [tab, setTab] = useState("Biriyani");
   const { settings, catering } = useContext(Store);
@@ -922,9 +912,6 @@ function Catering() {
             <br />
             We’ll bring the flavor. You bring the people.
           </p>
-          <a className="button" href="#quote">
-            Request a Quote <ArrowUpRight size={17} />
-          </a>
         </div>
         <img
           src={settings.catering_image}
@@ -1001,23 +988,6 @@ function Catering() {
             Call us for {tab.toLowerCase()} catering options and pricing.
           </p>
         )}
-      </section>
-      <section id="quote" className="section container contact-layout">
-        <div>
-          <div className="eyebrow">YOUR EVENT, OUR KITCHEN</div>
-          <h2>
-            Let’s make it
-            <br />a delicious one.
-          </h2>
-          <p>
-            Contact Harun Miyai to discuss your occasion, tray sizes, and menu.
-          </p>
-          <Button to={"tel:" + settings.phones?.[0]} className="outline">
-            <Phone size={17} />
-            {settings.phones?.[0]}
-          </Button>
-        </div>
-        <InquiryForm catering />
       </section>
     </>
   );
