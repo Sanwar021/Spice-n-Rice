@@ -68,14 +68,6 @@ const imageList = (value: unknown) =>
     : [];
 const itemImage = (item: { image?: string; images?: unknown }, fallback: string) =>
   imageList(item.images)[0] || item.image || fallback;
-const activeCampaigns = (rows: Row[]) => {
-  const today = new Date().toISOString().slice(0, 10);
-  return rows
-    .filter((row) => row.visible !== false)
-    .filter((row) => !row.starts_at || row.starts_at <= today)
-    .filter((row) => !row.ends_at || row.ends_at >= today)
-    .sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0));
-};
 export function Logo() {
   const { settings } = useContext(Store);
   const logoSrc = !settings.logo || ["/images/logo.svg", "/images/original-logo.png", "/images/spice-logo.webp"].includes(settings.logo)
@@ -307,8 +299,7 @@ function OpenBadge() {
   );
 }
 function Home() {
-  const { settings, items, categories, testimonials, campaigns } = useContext(Store);
-  const activePromo = activeCampaigns(campaigns)[0];
+  const { settings, items, categories, testimonials } = useContext(Store);
   const heroImages = Array.from(
     new Set([
       settings.hero_image || photo(0),
@@ -416,21 +407,6 @@ function Home() {
         </a>
       </section>
       <HighlightsCarousel />
-      {activePromo && (
-        <section className="container campaign-strip">
-          <img src={activePromo.image || settings.lunch_image || photo(2)} alt={activePromo.title} width="1000" height="700" loading="lazy" />
-          <div>
-            <div className="eyebrow">TODAY'S PROMOTION</div>
-            <h2>{activePromo.title}</h2>
-            <p>{activePromo.description}</p>
-            {activePromo.link_label && activePromo.link_url && (
-              <Button to={activePromo.link_url === "tel:" ? "tel:" + settings.phones?.[0] : activePromo.link_url} className="dark-button">
-                {activePromo.link_label} <ArrowUpRight size={17} />
-              </Button>
-            )}
-          </div>
-        </section>
-      )}
       <section className="section container" id="favorites">
         <div className="section-heading">
           <div>
