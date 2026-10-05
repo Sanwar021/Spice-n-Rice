@@ -634,10 +634,37 @@ export default function Admin() {
     queryFn: () => api("/admin/media"),
     enabled: !!me.data,
   });
+  const allItems = useQuery({
+    queryKey: ["admin", "items", "sidebar-search"],
+    queryFn: () => api("/admin/items"),
+    enabled: !!me.data,
+  });
   if (me.isPending)
     return <main className="loading">Opening the restaurant studio…</main>;
   if (!me.data) return <Login done={() => void me.refetch()} />;
   const rows: Row[] = Array.isArray(query.data) ? query.data : [];
+  const menuItems: Row[] = Array.isArray(allItems.data) ? allItems.data : [];
+  const sidebarTerm = search.trim().toLowerCase();
+  const sectionMatches = sidebarTerm
+    ? sections
+        .filter(([key, label]) =>
+          `${key} ${label}`.toLowerCase().includes(sidebarTerm),
+        )
+        .slice(0, 4)
+    : [];
+  const recordMatches = sidebarTerm
+    ? rows
+        .filter((row) => JSON.stringify(row).toLowerCase().includes(sidebarTerm))
+        .slice(0, 5)
+    : [];
+  const foodMatches = sidebarTerm
+    ? menuItems
+        .filter((row) => section !== "items" || !recordMatches.some((match) => match.id === row.id))
+        .filter((row) =>
+          `${row.name || ""} ${row.description || ""}`.toLowerCase().includes(sidebarTerm),
+        )
+        .slice(0, 5)
+    : [];
   const run = async (fn: () => Promise<unknown>) => {
     setError("");
     setNotice("");
@@ -664,6 +691,84 @@ export default function Admin() {
         <Link to="/" className="wordmark">
           <img className="brand-logo" src="/images/yummy-spice-logo.png" alt="Yummy Spice 'N' Rice" width="1760" height="880" /><span>RESTAURANT STUDIO</span>
         </Link>
+        <label className="sidebar-search">
+          <span>Search admin</span>
+          <input
+            type="search"
+            placeholder="Find product or option..."
+            value={search}
+            onChange={(event) => {
+              const value = event.target.value;
+              setSearch(value);
+              const term = value.trim().toLowerCase();
+              if (!term) return;
+              const match = sections.find(([key, label]) =>
+                `${key} ${label}`.toLowerCase().includes(term),
+              );
+              if (match && match[0] !== section) {
+                setSection(match[0]);
+                setNotice("");
+                setError("");
+              }
+            }}
+          />
+        </label>
+        {sidebarTerm && (
+          <div className="sidebar-search-results" role="listbox">
+            {[...sectionMatches.map(([key, label, Icon]) => (
+              <button
+                type="button"
+                key={`section-${key}`}
+                onClick={() => {
+                  setSection(key);
+                  setSearch("");
+                  setNotice("");
+                  setError("");
+                }}
+              >
+                <Icon size={15} />
+                <span>
+                  <strong>{label}</strong>
+                  <small>Open section</small>
+                </span>
+              </button>
+            )), ...foodMatches.map((row) => (
+              <button
+                type="button"
+                key={`food-${row.id}`}
+                onClick={() => {
+                  setSection("items");
+                  setEditing(row);
+                  setSearch("");
+                  setNotice("");
+                  setError("");
+                }}
+              >
+                <Utensils size={15} />
+                <span>
+                  <strong>{row.name || `Menu item #${row.id}`}</strong>
+                  <small>Menu item</small>
+                </span>
+              </button>
+            )), ...recordMatches.map((row) => (
+              <button
+                type="button"
+                key={`record-${row.id || JSON.stringify(row).slice(0, 30)}`}
+                onClick={() => {
+                  if (fields[section]) setEditing(row);
+                }}
+              >
+                <span>
+                  <strong>{row.name || row.title || row.email || `Record #${row.id}`}</strong>
+                  <small>{sections.find((s) => s[0] === section)?.[1]}</small>
+                </span>
+              </button>
+            ))]}
+            {!sectionMatches.length && !foodMatches.length && !recordMatches.length && (
+              <p>No matches found</p>
+            )}
+          </div>
+        )}
         <nav aria-label="Admin navigation">
           {sections.map(([key, label, Icon]) => (
             <button

@@ -1213,6 +1213,84 @@
 .admin-route .admin-sidebar .wordmark em {
   color: #efb05c;
 }
+.admin-route .sidebar-search {
+  gap: 8px;
+  color: #7f5b23;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.admin-route .sidebar-search input {
+  width: 100%;
+  min-height: 43px;
+  border: 1px solid #d66f19;
+  background: #fffdf7;
+  color: #1f2a22;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  letter-spacing: 0;
+  text-transform: none;
+  box-shadow:
+    0 0 0 3px #f2a33a26,
+    inset 0 1px 0 #ffffff;
+}
+.admin-route .sidebar-search input::placeholder {
+  color: #987f5c;
+}
+.admin-route .sidebar-search input:focus {
+  border-color: #b94f08;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 4px #f0b24b38,
+    0 10px 24px #8f4b081c;
+}
+.admin-route .sidebar-search-results {
+  display: grid;
+  gap: 6px;
+  margin-top: -18px;
+  padding: 8px;
+  border: 1px solid #e4d7c2;
+  border-radius: 12px;
+  background: #fffdf7;
+  box-shadow: 0 16px 28px #5d3b0d1a;
+}
+.admin-route .sidebar-search-results button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 10px;
+  border-radius: 9px;
+  color: #24362f;
+  background: transparent;
+}
+.admin-route .sidebar-search-results button:hover,
+.admin-route .sidebar-search-results button:focus-visible {
+  background: #f3eadb;
+  color: #16251f;
+}
+.admin-route .sidebar-search-results span {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+.admin-route .sidebar-search-results strong {
+  font-size: 0.82rem;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.admin-route .sidebar-search-results small,
+.admin-route .sidebar-search-results p {
+  margin: 0;
+  color: #8a7151;
+  font-size: 0.68rem;
+}
+.admin-route .sidebar-search-results p {
+  padding: 8px 10px;
+}
 .admin-route .admin-sidebar nav {
   display: flex;
   flex-direction: column;
