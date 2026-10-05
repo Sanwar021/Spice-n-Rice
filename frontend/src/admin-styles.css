@@ -1375,6 +1375,42 @@
   margin: 3px;
   font-size: 0.72rem;
 }
+.admin-route .row-image-upload {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 3px;
+  padding: 5px 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fffbf1;
+  color: var(--ink);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  vertical-align: middle;
+}
+.admin-route .row-image-upload:hover {
+  border-color: var(--saffron);
+  background: #fff4d8;
+}
+.admin-route .row-image-upload img,
+.admin-route .row-image-upload > span {
+  width: 34px;
+  height: 34px;
+  border-radius: 7px;
+  object-fit: cover;
+  background: #efe8d8;
+  flex: 0 0 auto;
+}
+.admin-route .row-image-upload > span {
+  display: grid;
+  place-items: center;
+  color: #8b785a;
+  font-size: 0.55rem;
+  line-height: 1.1;
+  text-align: center;
+}
 .admin-route .danger {
   color: #a33421;
 }

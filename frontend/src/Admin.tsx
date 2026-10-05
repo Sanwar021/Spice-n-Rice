@@ -1149,6 +1149,40 @@ export default function Admin() {
                                 )}
                               </td>
                               <td className="actions">
+                                {section === "items" && (
+                                  <label className="row-image-upload">
+                                    {row.image ? (
+                                      <img src={row.image} alt={row.name} width="44" height="44" />
+                                    ) : (
+                                      <span>No image</span>
+                                    )}
+                                    Upload picture
+                                    <input
+                                      className="sr-only"
+                                      type="file"
+                                      accept="image/jpeg,image/png"
+                                      aria-label={`Upload picture for ${row.name}`}
+                                      onChange={(event) => {
+                                        const file = event.target.files?.[0];
+                                        if (file)
+                                          void run(async () => {
+                                            const body = new FormData();
+                                            body.append("file", file);
+                                            const uploaded = await api<Row>(
+                                              "/admin/upload",
+                                              "POST",
+                                              body,
+                                            );
+                                            await save("items", {
+                                              ...row,
+                                              image: uploaded.image,
+                                            });
+                                          });
+                                        event.target.value = "";
+                                      }}
+                                    />
+                                  </label>
+                                )}
                                 <button onClick={() => setEditing(row)}>
                                   Edit
                                 </button>
