@@ -19,4 +19,5 @@ export type Item = {
   spicy: boolean;
   veg: boolean;
   image?: string;
+  images?: string[];
 };

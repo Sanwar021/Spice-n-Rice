@@ -136,7 +136,7 @@ func (a *API) Router() http.Handler {
 	r.Handle("/uploads/*", http.StripPrefix("/uploads/", http.FileServer(http.Dir(a.Uploads))))
 	r.Route("/api/v1", func(r chi.Router) {
 		r.Get("/menu", a.menu)
-		for route, resource := range map[string]string{"settings": "settings", "catering-menu": "catering", "testimonials": "testimonials"} {
+		for route, resource := range map[string]string{"settings": "settings", "catering-menu": "catering", "testimonials": "testimonials", "campaigns": "campaigns"} {
 			res := resource
 			r.Get("/"+route, func(w http.ResponseWriter, r *http.Request) { a.list(w, r, res) })
 		}
@@ -228,7 +228,7 @@ func validate(res string, b models.Record) error {
 			}
 		}
 	}
-	for _, key := range []string{"name", "description", "quote", "hero_text", "business_name", "address", "lunch_text"} {
+	for _, key := range []string{"name", "description", "quote", "hero_text", "hero_eyebrow", "hero_subtext", "hero_primary_label", "hero_secondary_label", "hero_meta", "hero_script", "hero_seal_top", "hero_seal_bottom", "hero_note_title", "hero_note_text", "business_name", "address", "lunch_text", "title", "link_label"} {
 		if v, ok := b[key]; ok {
 			s, ok := v.(string)
 			if !ok || len(s) > 4000 {
@@ -241,6 +241,19 @@ func validate(res string, b models.Record) error {
 			s, _ := b[key].(string)
 			if strings.TrimSpace(s) == "" {
 				return fmt.Errorf("name and quote are required")
+			}
+		}
+	}
+	if res == "campaigns" {
+		for _, key := range []string{"name", "title"} {
+			s, _ := b[key].(string)
+			if strings.TrimSpace(s) == "" {
+				return fmt.Errorf("name and title are required")
+			}
+		}
+		for _, key := range []string{"link_url", "starts_at", "ends_at"} {
+			if s, ok := b[key].(string); ok && len(s) > 500 {
+				return fmt.Errorf("%s must be under 500 characters", key)
 			}
 		}
 	}
@@ -267,9 +280,31 @@ func validate(res string, b models.Record) error {
 	if res == "catering" && !validNumber(b["half_price_cents"], 10000000) {
 		return fmt.Errorf("half-tray price must be integer cents")
 	}
-	for _, key := range []string{"image", "logo", "hero_image", "catering_image"} {
+	for _, key := range []string{"image", "logo", "hero_image", "catering_image", "about_image", "lunch_image", "tray_full_image", "tray_half_image"} {
 		if s, ok := b[key].(string); ok && s != "" && !strings.HasPrefix(s, "/images/") && !strings.HasPrefix(s, "/uploads/") {
 			return fmt.Errorf("use an uploaded image")
+		}
+	}
+	if images, ok := b["images"].([]any); ok {
+		if len(images) > 8 {
+			return fmt.Errorf("choose up to eight product images")
+		}
+		for _, value := range images {
+			s, ok := value.(string)
+			if !ok || s != "" && !strings.HasPrefix(s, "/images/") && !strings.HasPrefix(s, "/uploads/") {
+				return fmt.Errorf("use uploaded product images")
+			}
+		}
+	}
+	if images, ok := b["gallery_images"].([]any); ok {
+		if len(images) > 12 {
+			return fmt.Errorf("choose up to twelve gallery images")
+		}
+		for _, value := range images {
+			s, ok := value.(string)
+			if !ok || s != "" && !strings.HasPrefix(s, "/images/") && !strings.HasPrefix(s, "/uploads/") {
+				return fmt.Errorf("use uploaded gallery images")
+			}
 		}
 	}
 	if res == "settings" {

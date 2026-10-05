@@ -52,6 +52,7 @@ interface SiteStore {
   settings: Row;
   testimonials: Row[];
   catering: Row[];
+  campaigns: Row[];
 }
 export const Store = createContext<SiteStore>({
   items: [],
@@ -59,14 +60,32 @@ export const Store = createContext<SiteStore>({
   settings: {},
   testimonials: [],
   catering: [],
+  campaigns: [],
 });
 const links = ["Home", "Menu", "Catering", "About", "Contact"];
+const imageList = (value: unknown) =>
+  Array.isArray(value)
+    ? value.filter((url): url is string => typeof url === "string" && url.length > 0)
+    : [];
+const itemImage = (item: { image?: string; images?: unknown }, fallback: string) =>
+  imageList(item.images)[0] || item.image || fallback;
+const activeCampaigns = (rows: Row[]) => {
+  const today = new Date().toISOString().slice(0, 10);
+  return rows
+    .filter((row) => row.visible !== false)
+    .filter((row) => !row.starts_at || row.starts_at <= today)
+    .filter((row) => !row.ends_at || row.ends_at >= today)
+    .sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0));
+};
 export function Logo() {
   const { settings } = useContext(Store);
+  const logoSrc = !settings.logo || ["/images/logo.svg", "/images/original-logo.png", "/images/spice-logo.webp"].includes(settings.logo)
+    ? "/images/yummy-spice-logo.png"
+    : settings.logo;
   return (
     <Link to="/" className="logo">
-      {settings.logo && settings.logo !== "/images/logo.svg" ? (
-        <img className="brand-logo" src={settings.logo} srcSet={settings.logo === "/images/spice-logo.webp" ? "/images/spice-logo-320.webp 320w, /images/spice-logo.webp 768w" : undefined} sizes="160px" alt={settings.business_name} width="768" height="256" />
+      {logoSrc ? (
+        <img className="brand-logo" src={logoSrc} alt={settings.business_name || "Yummy Spice 'N' Rice"} width="1760" height="880" />
       ) : (
         <>
           {settings.business_name &&
@@ -102,7 +121,7 @@ export function Button({
     </a>
   );
 }
-export function Order() {
+export function Order({ children = "Order Online" }: { children?: React.ReactNode }) {
   const { settings } = useContext(Store);
   return (
     <a
@@ -111,7 +130,7 @@ export function Order() {
       target="_blank"
       rel="noopener noreferrer"
     >
-      Order Online <ArrowUpRight size={17} />
+      {children} <ArrowUpRight size={17} />
     </a>
   );
 }
@@ -192,7 +211,7 @@ function Shell() {
                 <ArrowUpRight size={20} />
               </Link>
             ))}
-            <Order />
+            <Order>{settings.hero_primary_label || "Order Online"}</Order>
             <a href={"tel:" + settings.phones?.[0]}>
               Call {settings.phones?.[0]}
             </a>
@@ -289,13 +308,14 @@ function OpenBadge() {
   );
 }
 function Home() {
-  const { settings, items, categories, testimonials } = useContext(Store);
+  const { settings, items, categories, testimonials, campaigns } = useContext(Store);
+  const activePromo = activeCampaigns(campaigns)[0];
   const heroImages = Array.from(
     new Set([
       settings.hero_image || photo(0),
       ...items.map(
         (item) =>
-          item.image || photo(Object.keys(categories).indexOf(item.category)),
+          itemImage(item, photo(Object.keys(categories).indexOf(item.category))),
       ),
     ]),
   );
@@ -341,7 +361,7 @@ function Home() {
         <div className="hero-aura" aria-hidden="true" />
         <div className="hero-copy">
           <div className="eyebrow">
-            <span className="little-line" /> BIG FLAVORS. NO FUSS.
+            <span className="little-line" /> {settings.hero_eyebrow || "BIG FLAVORS. NO FUSS."}
           </div>
           <h1>
             {settings.hero_text
@@ -359,37 +379,33 @@ function Home() {
                 </span>
               ))}
           </h1>
-          <p>
-            Your neighborhood Indian canteen. Slow-crafted flavors,
-            <br className="desktop-break" /> generous portions, and the best
-            naans in town.
-          </p>
+          <p>{settings.hero_subtext || "Your neighborhood Indian canteen. Slow-crafted flavors, generous portions, and the best naans in town."}</p>
           <div className="hero-buttons">
             <Order />
             <Button to="/menu" className="outline">
-              Explore the Menu <ArrowRight size={17} />
+              {settings.hero_secondary_label || "Explore the Menu"} <ArrowRight size={17} />
             </Button>
           </div>
           <div className="hero-meta">
-            <span>Richardson, TX · Since 2009</span>
+            <span>{settings.hero_meta || "Richardson, TX · Since 2009"}</span>
           </div>
         </div>
         <div className="hero-visual">
           <div className="hero-orbit" aria-hidden="true" />
-          <span className="hero-script">a bowl full of happiness</span>
+          <span className="hero-script">{settings.hero_script || "a bowl full of happiness"}</span>
           <HeroCarousel images={heroImages} />
           <div className="hero-seal" aria-label="Made to order, since 2009">
-            <span>MADE TO ORDER</span>
+            <span>{settings.hero_seal_top || "MADE TO ORDER"}</span>
             <Wheat size={28} strokeWidth={1.2} aria-hidden="true" />
-            <span>SINCE 2009</span>
+            <span>{settings.hero_seal_bottom || "SINCE 2009"}</span>
           </div>
           <div className="floating-note">
             <span className="note-icon">
               <Flame size={23} />
             </span>
             <div>
-              <strong>Fresh. Every single time.</strong>
-              <span>No shortcuts. Just good food.</span>
+              <strong>{settings.hero_note_title || "Fresh. Every single time."}</strong>
+              <span>{settings.hero_note_text || "No shortcuts. Just good food."}</span>
             </div>
           </div>
           <span className="hero-botanical" aria-hidden="true">
@@ -401,6 +417,21 @@ function Home() {
         </a>
       </section>
       <HighlightsCarousel />
+      {activePromo && (
+        <section className="container campaign-strip">
+          <img src={activePromo.image || settings.lunch_image || photo(2)} alt={activePromo.title} width="1000" height="700" loading="lazy" />
+          <div>
+            <div className="eyebrow">TODAY'S PROMOTION</div>
+            <h2>{activePromo.title}</h2>
+            <p>{activePromo.description}</p>
+            {activePromo.link_label && activePromo.link_url && (
+              <Button to={activePromo.link_url === "tel:" ? "tel:" + settings.phones?.[0] : activePromo.link_url} className="dark-button">
+                {activePromo.link_label} <ArrowUpRight size={17} />
+              </Button>
+            )}
+          </div>
+        </section>
+      )}
       <section className="section container" id="favorites">
         <div className="section-heading">
           <div>
@@ -424,10 +455,10 @@ function Home() {
               >
                 <div className="dish-photo">
                   <img
-                    src={item.image || photo(index)}
-                    srcSet={photoSet(item.image || photo(index))}
+                    src={itemImage(item, photo(index))}
+                    srcSet={photoSet(itemImage(item, photo(index)))}
                     sizes="(max-width: 600px) 285px, (max-width: 1440px) 30vw, 450px"
-                    alt={item.image ? item.name : `Illustrative ${item.name}`}
+                    alt={imageList(item.images)[0] || item.image ? item.name : `Illustrative ${item.name}`}
                     loading="lazy"
                     width="1000"
                     height="700"
@@ -497,7 +528,7 @@ function Home() {
           </Button>
         </div>
         <div className="lunch-image">
-          <img src={photo(2)} srcSet={photoSet(photo(2))} sizes="(max-width: 600px) 272px, 380px" alt="Illustrative Indian curry lunch" width="1000" height="1500" loading="lazy" />
+          <img src={settings.lunch_image || photo(2)} srcSet={photoSet(settings.lunch_image || photo(2))} sizes="(max-width: 600px) 272px, 380px" alt="Indian curry lunch" width="1000" height="1500" loading="lazy" />
           <span>
             Made fresh.
             <br />
@@ -723,13 +754,12 @@ function MenuPage() {
               {!list && (
                 <img
                   src={
-                    item.image ||
-                    photo(Object.keys(categories).indexOf(item.category))
+                    itemImage(item, photo(Object.keys(categories).indexOf(item.category)))
                   }
                   loading="lazy"
                   width="1000"
                   height="700"
-                  alt={item.image ? item.name : `Illustrative ${item.category} dish`}
+                  alt={imageList(item.images)[0] || item.image ? item.name : `Illustrative ${item.category} dish`}
                 />
               )}
               <div>
@@ -806,10 +836,9 @@ function MenuPage() {
             </button>
             <img
               src={
-                detail.image ||
-                photo(Object.keys(categories).indexOf(detail.category))
+                itemImage(detail, photo(Object.keys(categories).indexOf(detail.category)))
               }
-              alt={detail.image ? detail.name : `Illustrative ${detail.name}`}
+              alt={imageList(detail.images)[0] || detail.image ? detail.name : `Illustrative ${detail.name}`}
               width="1000"
               height="700"
             />
@@ -927,7 +956,7 @@ function Catering() {
           {["Full Tray", "Half Tray"].map((name, index) => (
             <div key={name}>
               <div className={`tray ${index ? "half" : ""}`}>
-                <img src={photo(0)} alt="Illustrative biryani tray" width="1000" height="653" loading="lazy" />
+                <img src={index ? settings.tray_half_image || photo(0) : settings.tray_full_image || photo(0)} alt={`${name} catering tray`} width="1000" height="653" loading="lazy" />
               </div>
               <h3>{name}</h3>
               <p>Serves {index ? "7–10" : "15–20"} people</p>
@@ -994,6 +1023,7 @@ function Catering() {
   );
 }
 function About() {
+  const { settings } = useContext(Store);
   return (
     <>
       <PageTitle
@@ -1002,7 +1032,7 @@ function About() {
         desc="Good food. Big portions. No fuss. That’s been our story since 2009."
       />
       <section className="container about-story">
-        <img src="/images/restaurant-interior.webp" alt="Inside Spice ’N’ Rice in Richardson, with our menu boards and service counter" width="1448" height="1086" loading="lazy" />
+        <img src={settings.about_image || "/images/restaurant-interior.webp"} alt="Inside Spice 'N' Rice in Richardson, with our menu boards and service counter" width="1448" height="1086" loading="lazy" />
         <div>
           <div className="eyebrow">THE WAY WE SEE IT</div>
           <h2>
@@ -1055,11 +1085,11 @@ function About() {
         <h2>Made for good company.</h2>
         <p className="tiny">Photos enhanced from our printed menu.</p>
         <div className="gallery">
-          {["biryani", "fish", "samosa", "chicken-wrap"].map((dish) => (
+          {(imageList(settings.gallery_images).length ? imageList(settings.gallery_images) : ["/images/menu-printed/biryani.webp", "/images/menu-printed/fish.webp", "/images/menu-printed/samosa.webp", "/images/menu-printed/chicken-wrap.webp"]).map((image) => (
             <img
-              key={dish}
-              src={`/images/menu-printed/${dish}.webp`}
-              alt={`From our printed menu: ${dish.replaceAll("-", " ")}`}
+              key={image}
+              src={image}
+              alt="Spice 'N' Rice food gallery"
               width="1000"
               height="700"
               loading="lazy"
@@ -1160,6 +1190,11 @@ export default function App() {
     queryFn: () => api("/testimonials"),
     enabled: !admin,
   });
+  const campaigns = useQuery({
+    queryKey: ["campaigns"],
+    queryFn: () => api("/campaigns"),
+    enabled: !admin,
+  });
   if (admin)
     return (
       <div
@@ -1198,6 +1233,7 @@ export default function App() {
             void settings.refetch();
             void menu.refetch();
             void catering.refetch();
+            void campaigns.refetch();
           }}
         >
           Try again
@@ -1221,6 +1257,7 @@ export default function App() {
       spicy: i.spicy,
       veg: i.veg,
       image: i.image,
+      images: i.images,
     })),
   );
   return (
@@ -1231,6 +1268,7 @@ export default function App() {
         categories: Object.fromEntries(cats.map((c) => [c.name, c])),
         catering: catering.data || [],
         testimonials: testimonials.data || [],
+        campaigns: campaigns.data || [],
       }}
     >
       <SEO />

@@ -12,7 +12,7 @@ import (
 
 type Store struct{ DB *pgxpool.Pool }
 
-var Tables = map[string]string{"categories": "categories", "items": "menu_items", "catering": "catering_items", "settings": "settings", "media": "media", "inquiries": "inquiries", "testimonials": "testimonials"}
+var Tables = map[string]string{"categories": "categories", "items": "menu_items", "catering": "catering_items", "settings": "settings", "media": "media", "inquiries": "inquiries", "testimonials": "testimonials", "campaigns": "campaigns"}
 
 func (s *Store) List(ctx context.Context, resource string) ([]models.Record, error) {
 	table, ok := Tables[resource]

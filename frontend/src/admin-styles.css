@@ -959,21 +959,237 @@
   color: var(--muted);
 }
 .admin-route .login {
-  max-width: 550px;
-  margin: 60px auto;
-  padding: 25px;
+  min-height: 100vh;
+  margin: 0;
+  padding: clamp(24px, 5vw, 62px);
+  display: grid;
+  grid-template-columns: minmax(280px, 430px) minmax(320px, 1fr);
+  align-items: center;
+  gap: clamp(35px, 9vw, 120px);
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 76% 47%, rgba(255, 246, 214, 0.7), transparent 19%),
+    linear-gradient(110deg, rgba(12, 108, 113, 0.84), rgba(109, 195, 193, 0.48) 42%, rgba(247, 241, 222, 0.88) 100%),
+    url("/images/design/food-3.webp");
+  background-size: cover;
+  background-position: center;
+  perspective: 1200px;
 }
-.admin-route .login > .wordmark {
-  margin-bottom: 40px;
+.admin-route .login:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(152deg, rgba(255, 255, 255, 0.16) 0 2px, transparent 2px 18px),
+    linear-gradient(90deg, rgba(11, 77, 77, 0.45), transparent 62%);
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+.admin-route .login-panel {
+  width: min(100%, 390px);
+  position: relative;
+  z-index: 2;
+  padding: clamp(28px, 4vw, 42px);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 22px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.07));
+  box-shadow:
+    0 28px 70px rgba(8, 48, 50, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(18px) saturate(1.2);
+  transform: rotateY(4deg) translateZ(20px);
+}
+.admin-route .login-logo {
+  width: 218px;
+  margin: 0 0 24px;
+  filter: drop-shadow(0 12px 16px rgba(0, 41, 32, 0.28));
+}
+.admin-route .login-logo img.brand-logo {
+  width: 100%;
+  max-width: none;
+  max-height: none;
+}
+.admin-route .login-logo span {
+  color: rgba(255, 255, 255, 0.84);
+  text-shadow: 0 1px 5px rgba(0, 42, 38, 0.45);
 }
 .admin-route .login h1 {
-  font-size: 3rem;
+  color: #ffffff;
+  font-family: "DM Sans", sans-serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 600;
+  letter-spacing: 0;
+  margin: 0 0 10px;
+  text-shadow: 0 8px 24px rgba(0, 59, 58, 0.35);
 }
-.admin-route .login label {
-  margin-bottom: 20px;
+.admin-route .login-copy {
+  max-width: 300px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  margin-bottom: 28px;
+}
+.admin-route .login-field {
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 16px;
+  text-shadow: 0 1px 4px rgba(0, 63, 61, 0.25);
+}
+.admin-route .login-field input {
+  color: #ffffff;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 0;
+  padding: 11px 2px 10px;
+  background: transparent;
+  box-shadow: none;
+}
+.admin-route .login-field input::placeholder {
+  color: rgba(255, 255, 255, 0.72);
+}
+.admin-route .login-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 8px 0 22px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.82rem;
+}
+.admin-route .login-options label {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+.admin-route .login-options input {
+  width: 16px;
+  height: 16px;
+  accent-color: #ffffff;
 }
 .admin-route .login .button {
+  min-width: 116px;
+  padding: 10px 25px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(145deg, #ffffff, #e8f2ee);
+  color: #21423a;
+  box-shadow:
+    0 14px 26px rgba(12, 63, 57, 0.25),
+    inset 0 1px 0 #ffffff;
+}
+.admin-route .login-food-scene {
+  position: relative;
+  z-index: 1;
+  min-height: min(56vw, 560px);
+  display: grid;
+  place-items: center;
+  transform-style: preserve-3d;
+}
+.admin-route .login-plate {
+  width: min(43vw, 520px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  padding: 22px;
+  background:
+    radial-gradient(circle at 45% 40%, #fff9ed 0 50%, #d8cab0 51% 58%, #fbf4e4 59% 100%);
+  box-shadow:
+    0 36px 60px rgba(27, 45, 35, 0.34),
+    -18px 16px 34px rgba(255, 255, 255, 0.28),
+    inset 0 4px 12px rgba(255, 255, 255, 0.85);
+  transform: rotateX(54deg) rotateZ(-18deg) translateZ(42px);
+  animation: plateFloat 5.5s ease-in-out infinite;
+}
+.admin-route .login-plate img {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  filter: saturate(1.18) contrast(1.08) drop-shadow(0 18px 18px rgba(38, 28, 12, 0.28));
+}
+.admin-route .login-plate:before,
+.admin-route .login-plate:after,
+.admin-route .login-smoke {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+}
+.admin-route .login-plate:before {
+  width: 62%;
+  height: 22%;
+  left: 18%;
+  top: -10%;
+  background: radial-gradient(ellipse, rgba(255, 255, 255, 0.6), transparent 68%);
+  filter: blur(18px);
+  animation: smokeRise 4.5s ease-in-out infinite;
+}
+.admin-route .login-plate:after {
+  width: 46%;
+  height: 15%;
+  right: 8%;
+  top: 2%;
+  background: radial-gradient(ellipse, rgba(255, 239, 193, 0.42), transparent 68%);
+  filter: blur(15px);
+  animation: smokeRise 5.5s ease-in-out 0.7s infinite;
+}
+.admin-route .login-smoke {
+  z-index: 1;
+  background: radial-gradient(ellipse, rgba(255, 255, 255, 0.35), transparent 70%);
+  filter: blur(22px);
+  animation: smokeDrift 7s ease-in-out infinite;
+}
+.admin-route .login-smoke-one {
+  width: 290px;
+  height: 86px;
+  right: 34%;
+  top: 19%;
+}
+.admin-route .login-smoke-two {
+  width: 230px;
+  height: 75px;
+  right: 18%;
+  top: 31%;
+  animation-delay: 1.2s;
+}
+.admin-route .spice-particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #b84f24;
+  box-shadow: 0 0 18px #f1b24c;
+  animation: spiceFloat 4.8s ease-in-out infinite;
+}
+.admin-route .spice-one {
+  top: 25%;
+  right: 31%;
+}
+.admin-route .spice-two {
+  top: 49%;
+  right: 20%;
+  animation-delay: 1s;
+}
+.admin-route .spice-three {
+  top: 36%;
+  right: 58%;
+  animation-delay: 1.8s;
+}
+@keyframes plateFloat {
+  0%, 100% { transform: rotateX(54deg) rotateZ(-18deg) translateZ(42px) translateY(0); }
+  50% { transform: rotateX(56deg) rotateZ(-15deg) translateZ(58px) translateY(-16px); }
+}
+@keyframes smokeRise {
+  0%, 100% { opacity: 0.35; transform: translateY(0) scale(0.92); }
+  50% { opacity: 0.8; transform: translateY(-32px) scale(1.12); }
+}
+@keyframes smokeDrift {
+  0%, 100% { opacity: 0.2; transform: translate3d(0, 0, 0) scale(0.9); }
+  50% { opacity: 0.55; transform: translate3d(-36px, -26px, 40px) scale(1.18); }
+}
+@keyframes spiceFloat {
+  0%, 100% { opacity: 0.2; transform: translate3d(0, 0, 0) scale(0.7); }
+  50% { opacity: 0.9; transform: translate3d(-18px, -34px, 60px) scale(1.25); }
 }
 .admin-route .admin-shell {
   display: grid;
@@ -1174,6 +1390,35 @@
   border-color: var(--green);
   background: var(--soft);
 }
+.admin-route .image-list-editor {
+  display: grid;
+  gap: 12px;
+}
+.admin-route .image-list-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+}
+.admin-route .image-list-preview > div {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.admin-route .image-list-preview img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+}
+.admin-route .image-list-preview button {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  padding: 9px;
+  background: transparent;
+}
 .admin-route .hours-editor > div {
   display: flex;
   gap: 8px;
@@ -1345,6 +1590,36 @@
   }
 }
 @media (max-width: 760px) {
+  .admin-route .login {
+    grid-template-columns: 1fr;
+    align-items: start;
+    padding: 28px 20px 42px;
+    gap: 24px;
+  }
+  .admin-route .login-panel {
+    width: 100%;
+    transform: none;
+    padding: 26px;
+  }
+  .admin-route .login-logo {
+    width: 185px;
+  }
+  .admin-route .login-food-scene {
+    min-height: 260px;
+    order: -1;
+  }
+  .admin-route .login-plate {
+    width: min(72vw, 310px);
+    padding: 14px;
+  }
+  .admin-route .login-smoke-one {
+    right: 18%;
+    top: 10%;
+  }
+  .admin-route .login-smoke-two {
+    right: 2%;
+    top: 21%;
+  }
   .admin-route .page-width {
     width: calc(100% - 40px);
   }

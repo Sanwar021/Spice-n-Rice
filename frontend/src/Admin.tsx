@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -17,6 +17,7 @@ import {
   Quote,
   Layers,
   ChefHat,
+  Megaphone,
 } from "lucide-react";
 import { api, client, money, Row, save } from "./api";
 const sections = [
@@ -27,6 +28,7 @@ const sections = [
   ["audit", "Price history", History],
   ["inquiries", "Inbox", Mail],
   ["media", "Media library", Image],
+  ["campaigns", "Campaigns", Megaphone],
   ["testimonials", "Testimonials", Quote],
   ["settings", "Site settings", Settings],
 ] as const;
@@ -45,11 +47,10 @@ function Login({ done }: { done: () => void }) {
   });
   return (
     <main className="login">
-      <Link to="/" className="wordmark">
-        <img className="brand-logo" src="/images/spice-logo.webp" alt="Spice 'N' Rice" width="768" height="256" /><span>THE RESTAURANT STUDIO</span>
-      </Link>
+      <div className="login-smoke login-smoke-one" aria-hidden="true" />
+      <div className="login-smoke login-smoke-two" aria-hidden="true" />
       <form
-        className="panel"
+        className="login-panel"
         onSubmit={handleSubmit(async (data) => {
           try {
             await api("/auth/login", "POST", data);
@@ -59,19 +60,21 @@ function Login({ done }: { done: () => void }) {
           }
         })}
       >
-        <p className="eyebrow">WELCOME BACK</p>
-        <h1>
-          Your kitchen,
-          <br />
-          at a glance.
-        </h1>
-        <label>
-          Email
+        <Link to="/" className="wordmark login-logo">
+          <img className="brand-logo" src="/images/yummy-spice-logo.png" alt="Yummy Spice 'N' Rice" width="1760" height="880" />
+          <span>THE RESTAURANT STUDIO</span>
+        </Link>
+        <h1>Login</h1>
+        <p className="login-copy">
+          Welcome! Please fill in your email and password to sign into your account.
+        </p>
+        <label className="login-field">
+          <span>Email Address</span>
           <input type="email" autoComplete="username" {...register("email")} />
         </label>
         {errors.email && <p role="alert">Enter a valid email.</p>}
-        <label>
-          Password
+        <label className="login-field">
+          <span>Password</span>
           <input
             type="password"
             autoComplete="current-password"
@@ -81,10 +84,24 @@ function Login({ done }: { done: () => void }) {
         <p role="alert" className="error">
           {error}
         </p>
+        <div className="login-options">
+          <label>
+            <input type="checkbox" /> Remember Me
+          </label>
+          <span>Forgot Password?</span>
+        </div>
         <button className="button" disabled={isSubmitting}>
           {isSubmitting ? "Signing in…" : "Sign in"}
         </button>
       </form>
+      <div className="login-food-scene" aria-hidden="true">
+        <span className="spice-particle spice-one" />
+        <span className="spice-particle spice-two" />
+        <span className="spice-particle spice-three" />
+        <div className="login-plate">
+          <img src="/images/menu-printed/biryani.webp" alt="" width="1000" height="700" />
+        </div>
+      </div>
     </main>
   );
 }
@@ -95,6 +112,7 @@ const fields: Record<string, string[]> = {
     "category_id",
     "price_cents",
     "image",
+    "images",
     "veg",
     "spicy",
     "featured",
@@ -111,12 +129,39 @@ const fields: Record<string, string[]> = {
     "available",
   ],
   testimonials: ["name", "quote", "visible", "sort_order"],
+  campaigns: [
+    "name",
+    "title",
+    "description",
+    "image",
+    "link_label",
+    "link_url",
+    "visible",
+    "starts_at",
+    "ends_at",
+    "sort_order",
+  ],
   settings: [
     "business_name",
     "logo",
+    "hero_eyebrow",
     "hero_text",
+    "hero_subtext",
+    "hero_primary_label",
+    "hero_secondary_label",
+    "hero_meta",
+    "hero_script",
+    "hero_seal_top",
+    "hero_seal_bottom",
+    "hero_note_title",
+    "hero_note_text",
     "hero_image",
     "catering_image",
+    "about_image",
+    "lunch_image",
+    "tray_full_image",
+    "tray_half_image",
+    "gallery_images",
     "address",
     "phones",
     "order_url",
@@ -137,6 +182,26 @@ const labels: Record<string, string> = {
   hours: "Hours by weekday (Sunday first)",
   holiday_closures: "Holiday closures (YYYY-MM-DD)",
   hero_text: "Homepage headline",
+  hero_eyebrow: "Hero eyebrow",
+  hero_subtext: "Hero supporting text",
+  hero_primary_label: "Hero primary button label",
+  hero_secondary_label: "Hero secondary button label",
+  hero_meta: "Hero location note",
+  hero_script: "Hero circular script",
+  hero_seal_top: "Hero seal top text",
+  hero_seal_bottom: "Hero seal bottom text",
+  hero_note_title: "Hero floating note title",
+  hero_note_text: "Hero floating note text",
+  about_image: "About page restaurant image",
+  lunch_image: "Lunch/promotion image",
+  tray_full_image: "Full tray image",
+  tray_half_image: "Half tray image",
+  gallery_images: "About gallery images",
+  images: "Product image gallery",
+  link_label: "Button label",
+  link_url: "Button link",
+  starts_at: "Start date (optional)",
+  ends_at: "End date (optional)",
   per_piece: "Sold per piece",
   veg: "Vegetarian",
   featured: "Featured on homepage",
@@ -166,9 +231,33 @@ function Editor({
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const fileInput = useRef<HTMLInputElement>(null);
   const change = (key: string, value: unknown) =>
     setData((d) => ({ ...d, [key]: value }));
+  const upload = async (file: File) => {
+    const body = new FormData();
+    body.append("file", file);
+    const uploaded = await api<Row>("/admin/upload", "POST", body);
+    await client.invalidateQueries({ queryKey: ["admin", "media"] });
+    return uploaded.image as string;
+  };
+  const uploadToField = async (key: string, file: File, append = false) => {
+    setError("");
+    setUploading(true);
+    try {
+      const image = await upload(file);
+      if (append) {
+        const next = [...(Array.isArray(data[key]) ? data[key] : [])];
+        if (!next.includes(image)) next.push(image);
+        change(key, next);
+      } else {
+        change(key, image);
+      }
+    } catch (error) {
+      setError((error as Error).message);
+    } finally {
+      setUploading(false);
+    }
+  };
   return (
     <div
       className="modal"
@@ -318,13 +407,70 @@ function Editor({
                   )
                 }
               />
-            ) : ["description", "lunch_text", "quote"].includes(key) ? (
+            ) : ["description", "lunch_text", "quote", "hero_subtext"].includes(key) ? (
               <textarea
                 rows={3}
                 value={data[key] || ""}
                 onChange={(e) => change(key, e.target.value)}
               />
-            ) : ["image", "logo", "hero_image", "catering_image"].includes(
+            ) : ["images", "gallery_images"].includes(key) ? (
+              <div className="image-list-editor">
+                <select
+                  value=""
+                  onChange={(e) => {
+                    const image = e.target.value;
+                    if (!image) return;
+                    const next = [...(Array.isArray(data[key]) ? data[key] : [])];
+                    if (!next.includes(image)) change(key, [...next, image]);
+                    e.target.value = "";
+                  }}
+                >
+                  <option value="">Add image from media library</option>
+                  {media.map((m) => (
+                    <option key={m.id} value={m.image}>
+                      {m.name}
+                    </option>
+                  ))}
+                </select>
+                <label className="image-upload-button">
+                  <Upload size={17} />
+                  {uploading ? "Uploading..." : "Upload from device"}
+                  <input
+                    className="sr-only"
+                    type="file"
+                    accept="image/jpeg,image/png"
+                    disabled={uploading}
+                    onChange={async (event) => {
+                      const file = event.target.files?.[0];
+                      if (file) await uploadToField(key, file, true);
+                      event.target.value = "";
+                    }}
+                  />
+                </label>
+                <div className="image-list-preview">
+                  {(Array.isArray(data[key]) ? data[key] : []).map(
+                    (image: string, index: number) => (
+                      <div key={`${image}-${index}`}>
+                        <img src={image} alt="" width="140" height="100" />
+                        <button
+                          type="button"
+                          onClick={() =>
+                            change(
+                              key,
+                              (data[key] || []).filter(
+                                (_: string, i: number) => i !== index,
+                              ),
+                            )
+                          }
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ),
+                  )}
+                </div>
+              </div>
+            ) : ["image", "logo", "hero_image", "catering_image", "about_image", "lunch_image", "tray_full_image", "tray_half_image"].includes(
                 key,
               ) ? (
               <>
@@ -342,7 +488,7 @@ function Editor({
                     </option>
                   ))}
                 </select>
-                {resource === "items" && key === "image" && (
+                {(
                   <>
                     <button
                       className="image-upload-button"
@@ -350,14 +496,13 @@ function Editor({
                       disabled={uploading}
                       onClick={(event) => {
                         event.preventDefault();
-                        fileInput.current?.click();
+                        (event.currentTarget.nextElementSibling as HTMLInputElement | null)?.click();
                       }}
                     >
                       <Upload size={17} />
                       {uploading ? "Uploading…" : "Upload from device"}
                     </button>
                     <input
-                      ref={fileInput}
                       className="sr-only"
                       type="file"
                       accept="image/jpeg,image/png"
@@ -369,21 +514,10 @@ function Editor({
                         setError("");
                         setUploading(true);
                         try {
-                          const body = new FormData();
-                          body.append("file", file);
-                          const uploaded = await api<Row>(
-                            "/admin/upload",
-                            "POST",
-                            body,
-                          );
-                          change("image", uploaded.image);
-                          await client.invalidateQueries({
-                            queryKey: ["admin", "media"],
-                          });
+                          await uploadToField(key, file);
                         } catch (error) {
                           setError((error as Error).message);
                         } finally {
-                          setUploading(false);
                           event.target.value = "";
                         }
                       }}
@@ -528,7 +662,7 @@ export default function Admin() {
     <div className="admin-shell">
       <aside className="admin-sidebar">
         <Link to="/" className="wordmark">
-          <img className="brand-logo" src="/images/spice-logo.webp" alt="Spice 'N' Rice" width="768" height="256" /><span>RESTAURANT STUDIO</span>
+          <img className="brand-logo" src="/images/yummy-spice-logo.png" alt="Yummy Spice 'N' Rice" width="1760" height="880" /><span>RESTAURANT STUDIO</span>
         </Link>
         <nav aria-label="Admin navigation">
           {sections.map(([key, label, Icon]) => (
