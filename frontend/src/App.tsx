@@ -35,7 +35,7 @@ import {
   List,
   Check,
 } from "lucide-react";
-import { photo, photoDimensions, photoSet, type Item } from "./design-data";
+import { photo, photoSet, type Item } from "./design-data";
 import HeroCarousel from "./HeroCarousel";
 import HighlightsCarousel from "./HighlightsCarousel";
 import { api, Row, money } from "./api";
@@ -832,7 +832,9 @@ function MenuPage() {
                 </Button>
               </div>
               <p className="tiny">
-                Illustrative image, not actual dish photography.
+                {detail.image?.startsWith("/images/menu-printed/")
+                  ? "Image enhanced from our printed menu. Presentation may vary."
+                  : "Illustrative image, not actual dish photography."}
               </p>
             </div>
           </section>
@@ -1000,7 +1002,7 @@ function About() {
         desc="Good food. Big portions. No fuss. That’s been our story since 2009."
       />
       <section className="container about-story">
-        <img src={photo(3)} alt="Illustrative Indian meal" width="1000" height="611" loading="lazy" />
+        <img src="/images/restaurant-interior.webp" alt="Inside Spice ’N’ Rice in Richardson, with our menu boards and service counter" width="1448" height="1086" loading="lazy" />
         <div>
           <div className="eyebrow">THE WAY WE SEE IT</div>
           <h2>
@@ -1051,15 +1053,15 @@ function About() {
       <section className="section container">
         <div className="eyebrow">A TASTE OF THE TABLE</div>
         <h2>Made for good company.</h2>
-        <p className="tiny">Illustrative food gallery.</p>
+        <p className="tiny">Photos enhanced from our printed menu.</p>
         <div className="gallery">
-          {[0, 1, 2, 3].map((index) => (
+          {["biryani", "fish", "samosa", "chicken-wrap"].map((dish) => (
             <img
-              key={index}
-              src={photo(index)}
-              alt="Illustrative Indian food"
-              width={photoDimensions(photo(index))[0]}
-              height={photoDimensions(photo(index))[1]}
+              key={dish}
+              src={`/images/menu-printed/${dish}.webp`}
+              alt={`From our printed menu: ${dish.replaceAll("-", " ")}`}
+              width="1000"
+              height="700"
               loading="lazy"
             />
           ))}

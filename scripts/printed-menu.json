@@ -1,0 +1,29 @@
+{
+  "source": "Three printed menu photographs supplied by the restaurant owner on 2026-10-05. Prices are in cents; existing website spellings are retained.",
+  "groups": {
+    "Biriyanis": {"Vegetable":1099,"Chicken":1199,"Chicken (Boneless)":1399,"Goat":1699,"Goat Kacchi":1699,"Beef":1599,"Beef Tehari":1599,"Shrimp":1699,"Morog Pulao":1199},
+    "Non-Veg": {"Chicken Karahi":1499,"Chicken Karahi (Boneless)":1599,"Chicken Korma":1499,"Chicken Korma (Boneless)":1599,"Buttered Chicken":1499,"Chicken 65":1499,"Chicken Roast":1499,"Kala Bhuna":1599,"Mezbani Beef Curry":1499,"Haleem":1299,"Goat Karahi":1599,"Goat Korma":1599},
+    "Grilled": {"Tandoori Chicken Leg (2 pieces)":1499,"Chicken Boti":1499,"Chicken Shish Kabab":1499,"Beef Boti":1599,"Beef Shish Kabab":1499,"Mixed Grill":2099},
+    "Naan Wraps": {"Paneer Wrap":899,"Chicken Boti Wrap":899,"Chicken Kebab":899,"Beef Kabab Wrap":899,"Gyro Wrap":899,"Gyro Combo":1099},
+    "Veg": {"Saag Paneer":1399,"Paneer Masala":1399,"Muttar Paneer":1399,"Mixed Vegetable":1199,"Navratan Korma":1199,"Aloo Gobi":1199,"Chana Masala":1199,"Bhuna Daal":1199,"Malai Vegetable Kofta":1199},
+    "Fish": {"Ruhi Fish Curry":1699,"Whole Tilapia Fish Curry":1599,"Hilsha Fish Curry":1999,"Pomphret Curry or Fry":1699,"Shrimp Curry":1699,"Shrimp Malai Curry":1699},
+    "Snacketizers": {"Vegetable Samosa (each)":199,"Chicken Samosa (each)":149,"Kolija Samosa (2pc)":500,"Beef Samosa (each)":149,"Potato Cutlet (each)":149,"Chicken Wings (6pc)":599,"Daal Puri (5pc)":599,"Samosa Chaat":699,"Tikki Chaat":699,"Chole Bhatura":1099},
+    "Sides": {"Steamed Rice":199,"Pulao Rice":199,"Khichuri Rice":299,"Naan":199,"Garlic Naan":299,"Paratha (2 Pieces)":399},
+    "Children’s": {"Chicken Nuggets with Fries":699,"Chicken Tenders (5)":799},
+    "Beverages": {"Soft Drinks (can)":199,"Bottled Water":199,"Masala Tea":149,"Lassi":399}
+  },
+  "images": [
+    ["Biriyanis","Chicken","biryani"],
+    ["Snacketizers","Vegetable Samosa (each)","samosa"],
+    ["Beverages","Masala Tea","chai"],
+    ["Sides","Naan","naan"],
+    ["Sides","Garlic Naan","garlic-naan"],
+    ["Children’s","Chicken Tenders (5)","chicken-tenders"],
+    ["Naan Wraps","Chicken Boti Wrap","chicken-wrap"],
+    ["Grilled","Chicken Shish Kabab","seekh-kabab"],
+    ["Grilled","Beef Shish Kabab","seekh-kabab"],
+    ["Non-Veg","Chicken Karahi","chicken-karahi"],
+    ["Non-Veg","Chicken Karahi (Boneless)","chicken-karahi"],
+    ["Veg","Aloo Gobi","vegetables"]
+  ]
+}
