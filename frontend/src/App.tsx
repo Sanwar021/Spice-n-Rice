@@ -36,6 +36,7 @@ import {
   Check,
 } from "lucide-react";
 import { photo, photoSet, type Item } from "./design-data";
+import { menuItemImage, menuItemName } from "./menu-images";
 import HeroCarousel from "./HeroCarousel";
 import HighlightsCarousel from "./HighlightsCarousel";
 import { api, Row, money } from "./api";
@@ -623,7 +624,8 @@ function Location({ embedded = false }: { embedded?: boolean }) {
   );
 }
 function MenuPage() {
-  const { items, categories, settings } = useContext(Store);
+  const { items: storedItems, categories, settings } = useContext(Store);
+  const items = storedItems.map((item) => ({ ...item, name: menuItemName(item) }));
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const [category, setCategory] = useState(params.get("category") || "All");
@@ -632,7 +634,9 @@ function MenuPage() {
   const [veg, setVeg] = useState(false);
   const requestedDish = params.get("dish");
   const [detailName, setDetailName] = useState<string | null>(requestedDish);
-  const detail = items.find((item) => item.name === detailName) || null;
+  const detail = items.find((item, index) =>
+    item.name === detailName || storedItems[index]?.name === detailName,
+  ) || null;
   const modal = useRef<HTMLElement>(null);
   useEffect(() => {
     setDetailName(requestedDish);
@@ -728,13 +732,11 @@ function MenuPage() {
             >
               {!list && (
                 <img
-                  src={
-                    itemImage(item, photo(Object.keys(categories).indexOf(item.category)))
-                  }
+                  src={menuItemImage(item)}
                   loading="lazy"
                   width="1000"
                   height="700"
-                  alt={imageList(item.images)[0] || item.image ? item.name : `Illustrative ${item.category} dish`}
+                  alt={item.name}
                 />
               )}
               <div>
@@ -810,10 +812,8 @@ function MenuPage() {
               <X />
             </button>
             <img
-              src={
-                itemImage(detail, photo(Object.keys(categories).indexOf(detail.category)))
-              }
-              alt={imageList(detail.images)[0] || detail.image ? detail.name : `Illustrative ${detail.name}`}
+              src={menuItemImage(detail)}
+              alt={detail.name}
               width="1000"
               height="700"
             />
@@ -836,7 +836,7 @@ function MenuPage() {
                 </Button>
               </div>
               <p className="tiny">
-                {detail.image?.startsWith("/images/menu-printed/")
+                {menuItemImage(detail).startsWith("/images/menu-printed/")
                   ? "Image enhanced from our printed menu. Presentation may vary."
                   : "Illustrative image, not actual dish photography."}
               </p>

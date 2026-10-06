@@ -1,0 +1,307 @@
+{
+  "purpose": "Dish-specific illustrative replacements for the Menu page only. Generated with the built-in image_gen tool; not photographs of restaurant servings.",
+  "items": [
+    {
+      "id": 1,
+      "slug": "vegetable-biriyani",
+      "subject": "Vegetable biryani, separate white and saffron basmati rice with carrots, green peas, green beans, cauliflower, potato, fried onions. Vegetarian, no meat or egg."
+    },
+    {
+      "id": 3,
+      "slug": "chicken-boneless-biriyani",
+      "subject": "Boneless chicken biryani, separate white and saffron basmati with golden boneless chicken chunks and fried onion; no bones or drumsticks."
+    },
+    {
+      "id": 4,
+      "slug": "goat-biriyani",
+      "subject": "Goat biryani: separate white and golden basmati rice, visible small brown bone-in goat meat pieces, fried onions and mint. No chicken."
+    },
+    {
+      "id": 5,
+      "slug": "goat-kacchi-biriyani",
+      "subject": "Dhaka goat kacchi biryani: fragrant white and saffron basmati, large bone-in goat pieces, whole golden roasted potato, fried onion. Show the goat and potato clearly; no chicken."
+    },
+    {
+      "id": 6,
+      "slug": "beef-biriyani",
+      "subject": "Beef biryani: separate white and saffron basmati rice with visible rich brown beef chunks, fried onions; no chicken."
+    },
+    {
+      "id": 7,
+      "slug": "beef-tehari",
+      "subject": "Bangladeshi beef tehari: small-grained aromatic golden beige rice cooked with small brown beef chunks, whole green chilies, mustard-oil sheen. Not multicolored saffron biryani; no chicken."
+    },
+    {
+      "id": 8,
+      "slug": "shrimp-biriyani",
+      "subject": "Shrimp biryani: separate white and saffron basmati rice with clearly visible large curled pink-orange shrimp, fried onion and mint. No meat."
+    },
+    {
+      "id": 75,
+      "slug": "morog-pulao",
+      "subject": "Bangladeshi morog pulao: pale ivory aromatic rice pilaf with a large golden bone-in chicken leg quarter, caramelized onion and green chili. Distinct from orange biryani, mostly pale rice."
+    },
+    {
+      "id": 10,
+      "slug": "chicken-karahi-boneless",
+      "subject": "Boneless chicken karahi: chunky red-brown tomato masala with clearly visible boneless chicken cubes, ginger matchsticks and green chilies. No bones or drumsticks. White ceramic bowl."
+    },
+    {
+      "id": 11,
+      "slug": "chicken-korma",
+      "subject": "Bangladeshi chicken korma, clearly visible bone-in chicken leg and thigh in pale creamy beige yogurt-onion gravy with fried onion. White ceramic bowl. No orange tomato sauce."
+    },
+    {
+      "id": 12,
+      "slug": "chicken-korma-boneless",
+      "subject": "Boneless chicken korma: small boneless chicken pieces in creamy pale beige cashew-yogurt onion gravy, fine fried onion garnish. White bowl. No bones, drumsticks or red sauce."
+    },
+    {
+      "id": 13,
+      "slug": "buttered-chicken",
+      "subject": "Butter chicken: recognizable boneless tandoori chicken pieces in smooth rich orange tomato-butter cream sauce, delicate cream swirl and cilantro. White ceramic bowl."
+    },
+    {
+      "id": 14,
+      "slug": "chicken-65",
+      "subject": "Chicken 65: dry-fried crisp deep red boneless chicken bites with glossy curry leaves and slit green chilies. No rice, no gravy, no bones. White ceramic plate."
+    },
+    {
+      "id": 15,
+      "slug": "chicken-roast",
+      "subject": "Bangladeshi chicken roast: a whole golden-brown chicken leg quarter coated in thick rich light-brown onion-yogurt masala, fried onions and green chili. Not a whole roast bird or western roast dinner."
+    },
+    {
+      "id": 16,
+      "slug": "mezbani-beef-curry",
+      "subject": "Chittagong mezbani beef curry: large tender beef chunks in deep red-brown spiced gravy, reddish oil glistening at edges. White ceramic bowl, no chicken, no cream swirl."
+    },
+    {
+      "id": 17,
+      "slug": "haleem",
+      "subject": "Haleem: thick savory beige-brown porridge of slow-cooked wheat lentils and finely shredded meat, smooth fibrous texture; topped with fried onions, julienned ginger, cilantro, lemon wedge. No separate rice grains or large curry chunks."
+    },
+    {
+      "id": 18,
+      "slug": "goat-karahi",
+      "subject": "Goat karahi: bone-in goat chunks in coarse dark red tomato masala, ginger matchsticks, green chilies and cilantro. White ceramic bowl. Clearly goat meat, no chicken."
+    },
+    {
+      "id": 19,
+      "slug": "goat-korma",
+      "subject": "Goat korma: small bone-in goat pieces in creamy golden-beige onion yogurt gravy, fried onions. White ceramic bowl. No chicken legs, no bright orange tomato gravy."
+    },
+    {
+      "id": 74,
+      "slug": "kala-bhuna",
+      "subject": "Bangladeshi beef kala bhuna: very dark brown nearly black beef chunks coated with thick deeply reduced roasted onion spice masala, green chili and caramelized onion. Dry-braised rich texture, little free gravy, not burned. White ceramic bowl."
+    },
+    {
+      "id": 20,
+      "slug": "tandoori-chicken-legs",
+      "subject": "Exactly TWO tandoori chicken leg quarters, bright reddish orange marinade, charred edges, visible thigh and drumstick each, lemon wedge and onion rings, white plate. No rice or other meat."
+    },
+    {
+      "id": 21,
+      "slug": "chicken-boti",
+      "subject": "Chicken boti kebab: grilled chunky boneless chicken cubes with orange-red tandoori seasoning, charred edges, served off skewers with onion rings and lemon. Not minced cylindrical seekh kebabs."
+    },
+    {
+      "id": 23,
+      "slug": "beef-boti",
+      "subject": "Beef boti kebab: grilled chunky dark brown beef cubes, charred seared edges, on white plate with onion rings and lemon. Not chicken or minced cylindrical kebabs."
+    },
+    {
+      "id": 24,
+      "slug": "beef-shish-kabab",
+      "subject": "Beef shish/seekh kebabs: dark brown cylindrical minced beef kebabs, ridged textured surface and char marks, lying on white plate with lemon and onion. Must look like ground-beef cylinders, not cubes or chicken."
+    },
+    {
+      "id": 25,
+      "slug": "mixed-grill",
+      "subject": "South Asian mixed grill platter: a reddish tandoori chicken leg, golden chicken boti cubes, dark beef boti cubes and brown cylindrical seekh kebabs together on one white oval platter. Clearly distinct grilled meats, onion rings and lemon."
+    },
+    {
+      "id": 26,
+      "slug": "paneer-wrap",
+      "subject": "Paneer naan wrap cut in two: soft blistered naan bread, visible large white paneer cheese cubes with orange tandoori coating, green lettuce, onion and tomato at open cross-section. Vegetarian, no meat."
+    },
+    {
+      "id": 28,
+      "slug": "chicken-kebab-wrap",
+      "subject": "Chicken kebab naan wrap cut in two: blistered naan enclosing a light golden cylindrical minced chicken seekh kebab, onion lettuce and yogurt sauce. Clearly show cross-section with ground chicken kebab, not cubed chicken."
+    },
+    {
+      "id": 29,
+      "slug": "beef-kabab-wrap",
+      "subject": "Beef kebab naan wrap cut in two: blistered naan with dark brown minced beef seekh kebab cylinder visible at cross-section, lettuce, onion, tomato, yogurt sauce. No chicken."
+    },
+    {
+      "id": 30,
+      "slug": "gyro-wrap",
+      "subject": "Gyro wrap: warm flatbread wrapped around clearly visible thin shaved slices of browned gyro meat, onion tomato lettuce and white tzatziki sauce. Show open cross-section, not kebab cylinders or meat cubes.",
+      "finalPrompt": "Single photorealistic menu photograph of ONE GYRO WRAP ONLY on a small white plate. The wrap is stuffed with thin shaved browned gyro meat, tomato, red onion, lettuce and white tzatziki, open end facing camera, soft lightly toasted thick flatbread. The entire plate contains ONLY the single wrap. Absolutely NO FRENCH FRIES, NO POTATOES, NO side dishes, NO dipping bowls, NO drink. This is the standalone gyro wrap, NOT a combo meal. The rest of the plate is bare white ceramic. Soft natural daylight, warm neutral tabletop, three-quarter view, realistic appetizing food texture matching restaurant menu photography. Landscape 3:2 with subject centered and enough margins for a wide 2:1 crop. No text, logos, graphic borders or collage."
+    },
+    {
+      "id": 31,
+      "slug": "gyro-combo",
+      "subject": "Gyro combo meal: a gyro flatbread wrap filled with thin sliced gyro meat, tomato onion lettuce and tzatziki, alongside golden French fries on the same white plate. Wrap and fries clearly visible. No drink."
+    },
+    {
+      "id": 32,
+      "slug": "saag-paneer",
+      "subject": "Saag paneer: distinct white paneer cheese cubes in thick dark green pureed spinach gravy, white ceramic bowl. No orange curry, meat or rice."
+    },
+    {
+      "id": 33,
+      "slug": "paneer-masala",
+      "subject": "Paneer masala: large white paneer cheese cubes coated in vibrant orange-red tomato cream masala, fine cream drizzle, white bowl. Clearly cheese cubes, not meat."
+    },
+    {
+      "id": 34,
+      "slug": "muttar-paneer",
+      "subject": "Muttar paneer: plenty of visible round green peas and white paneer cheese cubes in orange tomato gravy, white ceramic bowl. Peas and paneer both unmistakable."
+    },
+    {
+      "id": 35,
+      "slug": "mixed-vegetable",
+      "subject": "Indian mixed vegetable curry: visible cauliflower florets, green beans, green peas, carrots and potato in light orange masala. White bowl. No meat, no paneer."
+    },
+    {
+      "id": 36,
+      "slug": "navratan-korma",
+      "subject": "Navratan vegetable korma: mixed carrots, peas, beans, cauliflower and cashews with a few raisins in pale creamy ivory-yellow sauce. White bowl. Vegetarian, no meat, not red curry."
+    },
+    {
+      "id": 38,
+      "slug": "chana-masala",
+      "subject": "Chana masala: visible whole round chickpeas in thick red-brown tomato onion masala, cilantro garnish, white ceramic bowl. No paneer or meat."
+    },
+    {
+      "id": 39,
+      "slug": "bhuna-daal",
+      "subject": "Bangladeshi bhuna daal: thick golden yellow lentils with some soft lentil texture, tempered spices and browned onion, green chili. White bowl. No chickpeas, rice or meat chunks."
+    },
+    {
+      "id": 40,
+      "slug": "malai-vegetable-kofta",
+      "subject": "Malai vegetable kofta: several round golden vegetable dumplings partly submerged in creamy pale orange gravy, fine cream drizzle and cilantro. White bowl. Vegetarian, no meatballs."
+    },
+    {
+      "id": 41,
+      "slug": "ruhi-fish-curry",
+      "subject": "Bengali rohu/ruhi fish curry: two thick horseshoe-shaped cross-cut freshwater rohu fish steaks with dark gray skin edge and central bone in reddish golden thin curry, green chili. White shallow bowl, not salmon fillet or whole fish."
+    },
+    {
+      "id": 42,
+      "slug": "whole-tilapia-curry",
+      "subject": "Whole tilapia fish curry: ONE entire cooked tilapia with head and tail intact, recognizable elongated oval tilapia shape, scored skin, in red-golden curry sauce. White oval platter. Whole fish, not steaks or fillets."
+    },
+    {
+      "id": 43,
+      "slug": "hilsha-fish-curry",
+      "subject": "Bengali hilsa/ilish fish curry: two silver-skinned hilsa cross-cut steaks, characteristic curved belly and center bone, in golden mustard curry with green chilies. White shallow bowl. Not salmon, not whole fish."
+    },
+    {
+      "id": 44,
+      "slug": "pomfret-fry",
+      "subject": "Fried whole silver pomfret (rupchanda): characteristic flat broad diamond-shaped body with small head and narrow tail, intact fins, scored surface coated in reddish golden fried spices, lemon wedge on white platter. NOT tilapia, not long narrow fish.",
+      "finalPrompt": "Photorealistic food photograph of Bengali fried SILVER POMFRET (Pampus argenteus, rupchanda). Species accuracy is essential: VERY FLAT almost DIAMOND / rhombus shaped disc body, smooth scaleless skin with no visible large scales, very SMALL blunt head and small mouth, long swept triangular dorsal and anal fins extending into points, narrow caudal peduncle and a clearly deeply FORKED V-SHAPED tail. Not a tilapia, not sea bream, no rounded fan tail, no large round head, no spiny comb dorsal fin. One whole pomfret lightly coated in golden reddish turmeric spices and shallow fried, three shallow diagonal scoring cuts, on white oval plate with lemon. Show the entire recognizable diamond fish silhouette including forked tail, overhead three-quarter view. Landscape 3:2, warm neutral tabletop, natural soft daylight, realistic appetizing menu photography, generous margins for 2:1 crop. No text, logos, graphic border, collage, or other foods."
+    },
+    {
+      "id": 45,
+      "slug": "shrimp-curry",
+      "subject": "Shrimp curry: large clearly visible curled pink-orange peeled shrimp in red tomato onion curry, cilantro garnish. White bowl. No cream swirl or meat."
+    },
+    {
+      "id": 46,
+      "slug": "shrimp-malai-curry",
+      "subject": "Bengali shrimp malai curry: large curled pink-orange prawns in rich pale golden coconut milk cream gravy, white shallow bowl. Shrimp clearly visible, distinctly pale creamy sauce, not red tomato curry."
+    },
+    {
+      "id": 48,
+      "slug": "chicken-samosa",
+      "subject": "Chicken samosa: ONE triangular golden fried pastry cut open so both halves reveal lightly spiced minced chicken filling with tiny onion flecks. White plate. Meat filling visibly pale, no potatoes, no peas."
+    },
+    {
+      "id": 49,
+      "slug": "beef-samosa",
+      "subject": "Beef samosa: ONE crisp triangular golden fried pastry cut open into two halves revealing dark brown spiced ground beef filling and onion flecks. White plate. No chicken or potato filling."
+    },
+    {
+      "id": 50,
+      "slug": "kolija-samosa",
+      "subject": "Kolija samosa: TWO triangular golden fried pastries, one opened to show small dark reddish-brown diced cooked liver filling with onions. Liver pieces distinct, no potato or chicken. White plate."
+    },
+    {
+      "id": 51,
+      "slug": "potato-cutlet",
+      "subject": "Aloo potato cutlet: one round flattened golden brown crisp patty, a small cut edge reveals fluffy mashed potato with tiny herb flecks. White plate. Vegetarian, not meat or triangular samosa."
+    },
+    {
+      "id": 52,
+      "slug": "chicken-wings",
+      "subject": "Exactly SIX crispy golden spiced chicken wing pieces, mix of flats and drumettes, piled on a white plate with small sauce dip. Clearly wings, not full chicken legs or boneless nuggets."
+    },
+    {
+      "id": 53,
+      "slug": "daal-puri",
+      "subject": "Exactly FIVE small round golden puffed fried Bengali daal puri breads stacked slightly overlapping, one torn to show thin spiced lentil stuffing inside. No curry bowl or meat. White plate."
+    },
+    {
+      "id": 54,
+      "slug": "samosa-chaat",
+      "subject": "Samosa chaat: visibly broken triangular golden samosa pastry pieces topped with chickpea curry, white yogurt, dark tamarind and green chutneys, diced onion, cilantro, thin yellow sev. White shallow plate."
+    },
+    {
+      "id": 55,
+      "slug": "tikki-chaat",
+      "subject": "Aloo tikki chaat: clearly visible round fried potato patties topped with chickpeas, white yogurt, dark tamarind and green chutney, diced onion and sev. No triangular samosas. White shallow plate."
+    },
+    {
+      "id": 56,
+      "slug": "chole-bhatura",
+      "subject": "Chole bhatura: two large puffed golden bhatura breads next to a small bowl of dark chickpea chole curry, onion rings and pickle, all on a white platter. Breads and chickpeas both clearly visible."
+    },
+    {
+      "id": 57,
+      "slug": "steamed-rice",
+      "subject": "Plain steamed white basmati rice: pristine fluffy separate long white rice grains in a white bowl. No yellow spices, vegetables, meat, garnish or sauce."
+    },
+    {
+      "id": 58,
+      "slug": "pulao-rice",
+      "subject": "Plain pulao rice: fluffy ivory lightly golden fragrant rice pilaf, a few cumin seeds, bay leaf and cardamom, very light fried onion. White bowl. No meat or vegetables, not bright saffron biryani."
+    },
+    {
+      "id": 59,
+      "slug": "khichuri-rice",
+      "subject": "Bangladeshi bhuna khichuri: soft golden yellow rice cooked together with yellow lentils, clearly rice and lentil texture, green chili and modest browned onion garnish. White bowl, no meat."
+    },
+    {
+      "id": 62,
+      "slug": "paratha",
+      "subject": "Exactly TWO flaky golden layered parathas, round pan-fried flatbreads with visible spiral folds and toasted brown spots, slightly overlapping on white plate. Not puffy naan, no garlic garnish."
+    },
+    {
+      "id": 63,
+      "slug": "chicken-nuggets-fries",
+      "subject": "Children's chicken nuggets with fries: small golden crispy breaded chicken nuggets beside a generous portion of straight golden French fries and a small ketchup dip on white plate. Nuggets not long tenders."
+    },
+    {
+      "id": 65,
+      "slug": "soft-drink-can",
+      "subject": "One chilled aluminum soft drink soda can, condensation droplets, tasteful plain red design without letters, upright on neutral tabletop. Entire can visible, no glass, food, straw or brand text."
+    },
+    {
+      "id": 66,
+      "slug": "bottled-water",
+      "subject": "One clear transparent plastic drinking water bottle with sealed blue cap, clear water, condensation, plain unprinted label, upright on neutral tabletop. Entire bottle visible. No food, no text."
+    },
+    {
+      "id": 68,
+      "slug": "lassi",
+      "subject": "Three small clear glasses of Indian yogurt lassi: one creamy white sweet lassi, one white salted lassi with a tiny cumin sprinkle, one golden yellow mango lassi. Thick smooth yogurt drinks, close grouping on neutral tabletop. No fruit juice or food, no text."
+    }
+  ]
+}
